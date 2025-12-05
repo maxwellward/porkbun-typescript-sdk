@@ -73,3 +73,15 @@ export interface GetUrlForwardingResponse extends PorkbunBaseResponse {
 		}
 	]
 }
+
+export interface GetGlueRecordsPayload {
+	domain: string;
+}
+export interface GlueRecordAddresses {
+	v4: string[];
+	v6: string[];
+}
+export type GlueRecord = [string, GlueRecordAddresses];
+export interface GetGlueRecordsResponse extends PorkbunBaseResponse {
+	hosts?: GlueRecord[];
+}

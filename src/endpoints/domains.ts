@@ -3,9 +3,8 @@ import type {
 	ListAllPayload, ListAllResponse,
 	CheckDomainPayload, CheckDomainResponse,
 	GetNsPayload, GetNsResponse,
-	GetUrlForwarding,
-	GetUrlForwardingPayload,
-	GetUrlForwardingResponse,
+	GetUrlForwardingPayload, GetUrlForwardingResponse,
+	GetGlueRecordsPayload, GetGlueRecordsResponse,
 } from "../types/domains";
 
 export const createDomainsNamespace = (client: PorkbunClient) => {
@@ -66,6 +65,17 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 */
 		getUrlForwarding(payload: GetUrlForwardingPayload): Promise<GetUrlForwardingResponse> {
 			return client.request<GetUrlForwardingResponse>(`${BASE_PATH}/getUrlForwarding/${payload.domain}`)
+		},
+
+		/**
+		 * Gets a list of hosts and their glue records for a domain.
+		 * @param payload.domain - The TLD to check without the protocol or any path.
+		 * @returns A promise that resolves with an array of hosts and their glue records. Null if empty.
+		 * @example
+		 * client.getGlueRecords({ domain: 'example.com' });
+		 */
+		getGlueRecords(payload: GetGlueRecordsPayload): Promise<GetGlueRecordsResponse> {
+			return client.request<GetGlueRecordsResponse>(`${BASE_PATH}/getGlue/${payload.domain}`)
 		},
 	}
 }
