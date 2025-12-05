@@ -64,7 +64,7 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * @see {@link getNameservers}
 		 */
 		getNs(payload: GetNsPayload): Promise<GetNsResponse> {
-			return this.getNs(payload);
+			return this.getNameservers(payload);
 		},
 
 		/**
