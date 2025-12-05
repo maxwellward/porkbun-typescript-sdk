@@ -72,9 +72,9 @@ export interface GetUrlForwardingResponse extends PorkbunBaseResponse {
 		id: string,
 		subdomain: string,
 		location: string,
-		type: string,
-		includePath: string,
-		wildcard: string,
+		type: 'temporary' | 'permanent',
+		includePath: 'yes' | 'no',
+		wildcard: 'yes' | 'no',
 	}[]
 }
 
@@ -82,9 +82,9 @@ export interface AddUrlForwardPayload {
 	domain: string;
 	subdomain?: string;
 	location: string;
-	type: string;
-	includePath: string;
-	wildcard: string;
+	type: 'temporary' | 'permanent';
+	includePath: 'yes' | 'no';
+	wildcard: 'yes' | 'no';
 }
 export interface AddUrlForwardResponse extends PorkbunBaseResponse { }
 
