@@ -3,6 +3,9 @@ import type {
 	ListAllPayload, ListAllResponse,
 	CheckDomainPayload, CheckDomainResponse,
 	GetNsPayload, GetNsResponse,
+	GetUrlForwarding,
+	GetUrlForwardingPayload,
+	GetUrlForwardingResponse,
 } from "../types/domains";
 
 export const createDomainsNamespace = (client: PorkbunClient) => {
@@ -45,6 +48,17 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 */
 		getNs(payload: GetNsPayload): Promise<GetNsResponse> {
 			return client.request<GetNsResponse>(`${BASE_PATH}/getNs/${payload.domain}`)
+		},
+
+		/**
+		 * Gets a list of URL forwards for a domain
+		 * @param payload.domain - The TLD to check without the protocol or any path.
+		 * @returns A promise that resolves with an array of forwards.
+		 * @example
+		 * client.getUrlForwarding('example.com');
+		 */
+		getUrlForwarding(payload: GetUrlForwardingPayload): Promise<GetUrlForwardingResponse> {
+			return client.request<GetUrlForwardingResponse>(`${BASE_PATH}/getUrlForwarding/${payload.domain}`)
 		},
 	}
 }

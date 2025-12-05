@@ -19,14 +19,17 @@ export interface Domain {
 	labels?: DomainLabel[];
 }
 
-export interface ListAllResponse extends PorkbunBaseResponse {
-	domains: Domain[];
-}
 export interface ListAllPayload {
 	start?: number;
 	includeLabels?: boolean;
 }
+export interface ListAllResponse extends PorkbunBaseResponse {
+	domains: Domain[];
+}
 
+export interface CheckDomainPayload {
+	domain: string;
+}
 export interface CheckDomainResponse extends PorkbunBaseResponse {
 	avail: string,
 	type: string,
@@ -47,13 +50,26 @@ export interface CheckDomainResponse extends PorkbunBaseResponse {
 		}
 	}
 }
-export interface CheckDomainPayload {
+
+export interface GetNsPayload {
 	domain: string;
 }
-
 export interface GetNsResponse extends PorkbunBaseResponse {
 	ns: string[]
 }
-export interface GetNsPayload {
+
+export interface GetUrlForwardingPayload {
 	domain: string;
+}
+export interface GetUrlForwardingResponse extends PorkbunBaseResponse {
+	forwards: [
+		{
+			id: string,
+			subdomain: string,
+			location: string,
+			type: string,
+			includePath: string,
+			wildcard: string,
+		}
+	]
 }
