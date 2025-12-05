@@ -34,31 +34,32 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		},
 
 		/**
-		 * Retrieves all DNS records associated with a domain and record type.
-		 * WARNING: This is potentially currently bugged on the Porkbun API side and will not return all the right results.
-		 * @param payload.domain The TLD to retrieve DNS records from.
-		 * @param payload.type The type of record to filter by.
-		 * @returns A promise that resolves with a list of DNS records for the specified domain, matching the type filter.
+		 * Retrieves all DNS records of a given type at the root domain.
+		 * Note: This searches the root domain only, not subdomains. For example, searching for CNAME
+		 * records will return nothing if your root domain has no CNAME (root domains typically use
+		 * ALIAS or A records instead). Use `getSubdomainDnsRecords` to search specific subdomains.
+		 * @param payload.domain The domain to retrieve DNS records from.
+		 * @param payload.type The type of record to filter by (e.g., 'A', 'CNAME', 'TXT').
+		 * @returns A promise that resolves with a list of DNS records matching the type at the root domain.
 		 * @example
-		 * client.getDnsRecordsByType({ domain: 'example.com', type: 'cname' });
+		 * // Get all A records at the root domain
+		 * client.dns.getRootDnsRecords({ domain: 'example.com', type: 'A' });
 		 */
-		getDnsRecordsByType(payload: RetrieveDnsRecordsByTypePayload): Promise<RetrieveDnsRecordsByTypeResponse> {
-			console.log(`${BASE_PATH}/retrieveByNameType/${payload.domain}/${payload.type}`);
-
+		getRootDnsRecords(payload: RetrieveDnsRecordsByTypePayload): Promise<RetrieveDnsRecordsByTypeResponse> {
 			return client.request<RetrieveDnsRecordsByTypeResponse>(`${BASE_PATH}/retrieveByNameType/${payload.domain}/${payload.type}`)
 		},
 
 		/**
-		 * Retrieves all DNS records associated with a domain, record type, and subdomain.
-		 * WARNING: This is potentially currently bugged on the Porkbun API side and will not return all the right results.
-		 * @param payload.domain The TLD to retrieve DNS records from.
-		 * @param payload.type The type of record to filter by.
-		 * @param payload.subdomain The subdomain to filter by.
-		 * @returns A promise that resolves with a list of DNS records for the specified domain, matching the type and subdomain filter.
+		 * Retrieves all DNS records of a given type at a specific subdomain.
+		 * @param payload.domain The domain to retrieve DNS records from.
+		 * @param payload.type The type of record to filter by (e.g., 'A', 'CNAME', 'TXT').
+		 * @param payload.subdomain The subdomain to search (e.g., 'www', 'api', 'review').
+		 * @returns A promise that resolves with a list of DNS records matching the type and subdomain.
 		 * @example
-		 * client.getDnsRecordsBySubdomain({ domain: 'example.com', type: 'cname', subdomain: 'hello' });
+		 * // Get all CNAME records at the 'www' subdomain
+		 * client.dns.getSubdomainDnsRecords({ domain: 'example.com', type: 'CNAME', subdomain: 'www' });
 		 */
-		getDnsRecordsBySubdomain(payload: RetrieveDnsRecordsBySubdomainPayload): Promise<RetrieveDnsRecordsBySubdomainResponse> {
+		getSubdomainDnsRecords(payload: RetrieveDnsRecordsBySubdomainPayload): Promise<RetrieveDnsRecordsBySubdomainResponse> {
 			return client.request<RetrieveDnsRecordsBySubdomainResponse>(`${BASE_PATH}/retrieveByNameType/${payload.domain}/${payload.type}/${payload.subdomain}`)
 		},
 
