@@ -1,5 +1,21 @@
 import type { PorkbunBaseResponse } from "../client";
 
+export enum DNS_RECORD_TYPE {
+	A = "A",
+	MX = "MX",
+	CNAME = "CNAME",
+	ALIAS = "ALIAS",
+	TXT = "TXT",
+	NS = "NS",
+	AAAA = "AAAA",
+	SRV = "SRV",
+	TLSA = "TLSA",
+	CAA = "CAA",
+	HTTPS = "HTTPS",
+	SVCB = "SVCB",
+	SSHFP = "SSHFP"
+}
+
 export interface DnsRecord {
 	id: string,
 	name: string,
@@ -15,22 +31,6 @@ export interface DnssecRecord {
 	alg: string;
 	digestType: string;
 	digest: string;
-}
-
-export enum DNS_RECORD_TYPE {
-	A = "A",
-	MX = "MX",
-	CNAME = "CNAME",
-	ALIAS = "ALIAS",
-	TXT = "TXT",
-	NS = "NS",
-	AAAA = "AAAA",
-	SRV = "SRV",
-	TLSA = "TLSA",
-	CAA = "CAA",
-	HTTPS = "HTTPS",
-	SVCB = "SVCB",
-	SSHFP = "SSHFP"
 }
 
 export interface RetrieveDnsRecordsPayload {
