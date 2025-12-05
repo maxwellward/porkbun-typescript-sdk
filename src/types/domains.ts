@@ -31,7 +31,7 @@ export interface CheckDomainPayload {
 	domain: string;
 }
 export interface CheckDomainResponse extends PorkbunBaseResponse {
-	avail: string,
+	avail: 'yes' | 'no',
 	type: string,
 	price: string,
 	firstYearPromo: string,
