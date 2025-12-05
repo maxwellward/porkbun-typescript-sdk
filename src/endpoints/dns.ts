@@ -1,5 +1,5 @@
 import type { PorkbunClient } from "../client";
-import { CreateDnsRecordPayload, CreateDnsRecordResponse, DeleteDnsRecordByIdPayload, DeleteDnsRecordByIdResponse, DeleteDnsRecordsBySubdomainPayload, DeleteDnsRecordsBySubdomainResponse, EditDnsRecordByIdPayload, EditDnsRecordByIdResponse, EditDnsRecordsBySubdomainPayload, EditDnsRecordsBySubdomainResponse, RetrieveDnsRecordsBySubdomainPayload, RetrieveDnsRecordsBySubdomainResponse, RetrieveDnsRecordsByTypePayload, RetrieveDnsRecordsByTypeResponse, RetrieveDnsRecordsPayload, RetrieveDnsRecordsResponse } from "../types/dns";
+import { CreateDnsRecordPayload, CreateDnsRecordResponse, CreateDnssecRecordPayload, CreateDnssecRecordResponse, DeleteDnsRecordByIdPayload, DeleteDnsRecordByIdResponse, DeleteDnsRecordsBySubdomainPayload, DeleteDnsRecordsBySubdomainResponse, DeleteDnssecRecordPayload, DeleteDnssecRecordResponse, EditDnsRecordByIdPayload, EditDnsRecordByIdResponse, EditDnsRecordsBySubdomainPayload, EditDnsRecordsBySubdomainResponse, GetDnssecRecordResponse, GetDnssecRecordsPayload, RetrieveDnsRecordsBySubdomainPayload, RetrieveDnsRecordsBySubdomainResponse, RetrieveDnsRecordsByTypePayload, RetrieveDnsRecordsByTypeResponse, RetrieveDnsRecordsPayload, RetrieveDnsRecordsResponse } from "../types/dns";
 
 export const createDnsNamespace = (client: PorkbunClient) => {
 	const BASE_PATH = '/dns'
@@ -74,7 +74,7 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * Edits a DNS record on the specified domain.
 		 * @param payload.domain The TLD to retrieve DNS records from.
 		 * @param payload.record_id The ID of the DNS record to edit. 
-		 * @param {string|undefined} payload.name The new subdomain for the record, not including the domain itself. Leave blank to create a record on the root domain. Use * to create a wildcard record.
+		 * @param {string|undefined} payload.name The new subdomain for the record, not including the domain itself. Leave blank to edit a record on the root domain. Use * to edit a wildcard record.
 		 * @param payload.type The new type for the record. Valid types are: A, MX, CNAME, ALIAS, TXT, NS, AAAA, SRV, TLSA, CAA, HTTPS, SVCB, SSHFP
 		 * @param payload.content The new answer content for the record. See the DNS management popup from the domain management console on the Porkbun website for proper formatting of each record type.
 		 * @param {number|undefined} payload.ttl The new time to live in seconds for the record. The minimum and the default is 600 seconds.
@@ -131,6 +131,53 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		deleteDnsRecordsBySubdomain(payload: DeleteDnsRecordsBySubdomainPayload): Promise<DeleteDnsRecordsBySubdomainResponse> {
 			const { domain, type, subdomain, ...body } = payload;
 			return client.request<DeleteDnsRecordsBySubdomainResponse>(`${BASE_PATH}/deleteByNameType/${domain}/${type}/${subdomain}`, body)
+		},
+
+		/**
+		 * Create a DNSSEC record at the registry. Please note that DNSSEC creation differs at the various registries and some elements may or may not be required. Most often the max sig life and key data elements are not required.
+		 *
+		 * @param payload.domain The domain to create the DNSSEC record for.
+		 * @param {number|undefined} payload.keyTag Key Tag.
+		 * @param {number|undefined} payload.alg DS Data Algorithm.
+		 * @param {number|undefined} payload.digestType Digest Type.
+		 * @param {string|undefined} payload.digest Digest.
+		 * @param {string|undefined} payload.maxSigLife Max Sig Life.
+		 * @param {string|undefined} payload.keyDataFlags Key Data Flags.
+		 * @param {string|undefined} payload.keyDataProtocol Key Data Protocol.
+		 * @param {string|undefined} payload.keyDataAlgo Key Data Algorithm.
+		 * @param {string|undefined} payload.keyDataPubKey Key Data Public Key.
+		 * @returns A promise that resolves successfully when the record is created.
+		 * @example
+		 * client.createDnssecRecord({ domain: 'example.com', keyTag: 12345, alg: 13, digestType: 2, digest: 'abc123...' });
+		 */
+		createDnssecRecord(payload: CreateDnssecRecordPayload): Promise<CreateDnssecRecordResponse> {
+			const { domain, ...body } = payload;
+			return client.request<CreateDnssecRecordResponse>(`${BASE_PATH}/createDnssecRecord/${domain}`, body)
+		},
+
+		/**
+		 * Delete a DNSSEC record associated with the domain at the registry. Please note that most registries will delete all records with matching data, not just the record with the matching key tag.
+		 *
+		 * @param payload.domain The domain to delete the DNSSEC record on.
+		 * @param payload.keyTag The key tag value for the DNSSEC record.
+		 * @returns A promise that resolves successfully when the record is deleted.
+		 * @example
+		 * client.deleteDnssecRecord({ domain: 'example.com', keyTag: 12345 });
+		 */
+		deleteDnssecRecord(payload: DeleteDnssecRecordPayload): Promise<DeleteDnssecRecordResponse> {
+			return client.request<DeleteDnssecRecordResponse>(`${BASE_PATH}/deleteDnssecRecord/${payload.domain}/${payload.keyTag}`)
+		},
+
+		/**
+		 * Gets all DNSSEC records at the registry for a specific domain. 
+		 *
+		 * @param payload.domain The domain to get the DNSSEC records for.
+		 * @returns A promise that returns an object of all the DNSSEC records for the specified domain. Null if empty.
+		 * @example
+		 * client.getDnssecRecords({ domain: 'example.com' });
+		 */
+		getDnssecRecords(payload: GetDnssecRecordsPayload): Promise<GetDnssecRecordResponse> {
+			return client.request<GetDnssecRecordResponse>(`${BASE_PATH}/getDnssecRecords/${payload.domain}`)
 		},
 	}
 }

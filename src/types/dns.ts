@@ -10,6 +10,13 @@ export interface DnsRecord {
 	notes: string,
 }
 
+export interface DnssecRecord {
+	keyTag: string;
+	alg: string;
+	digestType: string;
+	digest: string;
+}
+
 export enum DNS_RECORD_TYPE {
 	A = "A",
 	MX = "MX",
@@ -78,7 +85,7 @@ export interface EditDnsRecordByIdResponse extends PorkbunBaseResponse {}
 
 export interface EditDnsRecordsBySubdomainPayload {
 	domain: string,
-	type: string,
+	type: `${DNS_RECORD_TYPE}`,
 	subdomain: string,
 	content: string,
 	ttl?: number,
@@ -95,7 +102,34 @@ export interface DeleteDnsRecordByIdResponse extends PorkbunBaseResponse {}
 
 export interface DeleteDnsRecordsBySubdomainPayload {
 	domain: string,
-	type: string,
+	type: `${DNS_RECORD_TYPE}`,
 	subdomain: string,
 }
 export interface DeleteDnsRecordsBySubdomainResponse extends PorkbunBaseResponse {}
+
+export interface CreateDnssecRecordPayload {
+	domain: string,
+	keyTag?: number,
+	alg?: number,
+	digestType?: number,
+	digest?: string,
+	maxSigLife?: string,
+	keyDataFlags?: string,
+	keyDataProtocol?: string,
+	keyDataAlgo?: string,
+	keyDataPubKey?: string,
+}
+export interface CreateDnssecRecordResponse extends PorkbunBaseResponse {}
+
+export interface DeleteDnssecRecordPayload {
+	domain: string,
+	keyTag: string,
+}
+export interface DeleteDnssecRecordResponse extends PorkbunBaseResponse {}
+
+export interface GetDnssecRecordsPayload {
+	domain: string,
+}
+export interface GetDnssecRecordResponse extends PorkbunBaseResponse {
+	records: Record<string, DnssecRecord>;
+}
