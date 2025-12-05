@@ -113,7 +113,7 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 */
 		addUrlForward(payload: AddUrlForwardPayload): Promise<AddUrlForwardResponse> {
 			const { domain, ...body } = payload;
-			return client.request<AddUrlForwardResponse>(`${BASE_PATH}/addUrlForward/${payload.domain}`, body)
+			return client.request<AddUrlForwardResponse>(`${BASE_PATH}/addUrlForward/${domain}`, body)
 		},
 
 		/**
@@ -165,7 +165,7 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 */
 		updateGlue(payload: UpdateGluePayload): Promise<UpdateGlueResponse> {
 			const { domain, glue_host_subdomain, ...body } = payload;
-			return client.request<UpdateGlueResponse>(`${BASE_PATH}/updateGlue/${payload.domain}/${payload.glue_host_subdomain}`, body)
+			return client.request<UpdateGlueResponse>(`${BASE_PATH}/updateGlue/${domain}/${glue_host_subdomain}`, body)
 		},
 
 		/**

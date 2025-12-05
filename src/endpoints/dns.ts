@@ -153,8 +153,7 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * client.dns.deleteDnsRecordsBySubdomain({ domain: 'example.com', type: 'A', subdomain: 'hello' });
 		 */
 		deleteDnsRecordsBySubdomain(payload: DeleteDnsRecordsBySubdomainPayload): Promise<DeleteDnsRecordsBySubdomainResponse> {
-			const { domain, type, subdomain, ...body } = payload;
-			return client.request<DeleteDnsRecordsBySubdomainResponse>(`${BASE_PATH}/deleteByNameType/${domain}/${type}/${subdomain}`, body)
+			return client.request<DeleteDnsRecordsBySubdomainResponse>(`${BASE_PATH}/deleteByNameType/${payload.domain}/${payload.type}/${payload.subdomain}`)
 		},
 
 		/**
