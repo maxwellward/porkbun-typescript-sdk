@@ -1,0 +1,25 @@
+{
+  "name": "porkbun-typescript-sdk",
+  "author": {
+    "name": "Maxwell Ward",
+    "url": "https://maxward.ca"
+  },
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
+  },
+  "scripts": {
+    "build": "tsc && bun build src/index.ts --outfile dist/index.js --format esm"
+  }
+}
