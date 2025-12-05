@@ -50,3 +50,10 @@ export interface CheckDomainResponse extends PorkbunBaseResponse {
 export interface CheckDomainPayload {
 	domain: string;
 }
+
+export interface GetNsResponse extends PorkbunBaseResponse {
+	ns: string[]
+}
+export interface GetNsPayload {
+	domain: string;
+}
