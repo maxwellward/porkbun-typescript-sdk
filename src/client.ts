@@ -10,6 +10,12 @@ export interface PorkbunClientOptions {
 export interface PorkbunBaseResponse {
 	status: string,
 	message?: string,
+	limits?: {
+		TTL: number,
+		limit: number,
+		used: number,
+		naturalLanguage: string
+	}
 }
 
 export class PorkbunClient {
@@ -43,7 +49,7 @@ export class PorkbunClient {
 		})
 
 		if (!response.ok) {
-			throw new Error(`Porkbun API error: HTTP ${response.status} ${response.statusText}`)
+			throw new Error(`Porkbun API error: HTTP ${response.status} ${response.statusText} ${(await response.text())}`)
 		}
 
 		const json: unknown = await response.json();

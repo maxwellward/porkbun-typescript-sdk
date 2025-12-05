@@ -22,8 +22,31 @@ export interface Domain {
 export interface ListAllResponse extends PorkbunBaseResponse {
 	domains: Domain[];
 }
-
 export interface ListAllPayload {
 	start?: number;
 	includeLabels?: boolean;
+}
+
+export interface CheckDomainResponse extends PorkbunBaseResponse {
+	avail: string,
+	type: string,
+	price: string,
+	firstYearPromo: string,
+	regularPrice: string,
+	premium: string,
+	additional: {
+		renewal: {
+			type: string,
+			price: string,
+			regularPrice: string
+		},
+		transfer: {
+			type: string,
+			price: string,
+			regularPrice: string
+		}
+	}
+}
+export interface CheckDomainPayload {
+	domain: string;
 }
