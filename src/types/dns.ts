@@ -123,7 +123,7 @@ export interface CreateDnssecRecordResponse extends PorkbunBaseResponse {}
 
 export interface DeleteDnssecRecordPayload {
 	domain: string,
-	keyTag: string,
+	keyTag: number,
 }
 export interface DeleteDnssecRecordResponse extends PorkbunBaseResponse {}
 
