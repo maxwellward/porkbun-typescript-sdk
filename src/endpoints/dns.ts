@@ -7,13 +7,13 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 	return {
 		/**
 		 * Retrieves all DNS records associated with a domain.
-		 * @param payload.domain The TLD to retrieve DNS records from.
+		 * @param payload.domain The domain to retrieve DNS records from.
 		 * @param payload.type The type of DNS record to filter by.
 		 * @returns A promise that resolves with the list of DNS records for the domain (filtered if payload.type is provided).
 		 * @example
-		 * client.getDnsRecords({ domain: 'example.com', });
+		 * client.dns.getDnsRecords({ domain: 'example.com' });
 		 * @example
-		 * client.getDnsRecords({ domain: 'example.com', type: 'CNAME' });
+		 * client.dns.getDnsRecords({ domain: 'example.com', type: 'CNAME' });
 		 */
 		async getDnsRecords(payload: RetrieveDnsRecordsPayload): Promise<RetrieveDnsRecordsResponse> {
 			const response = await client.request<RetrieveDnsRecordsResponse>(`${BASE_PATH}/retrieve/${payload.domain}`)
@@ -31,11 +31,11 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 
 		/**
 		 * Retrieves a DNS record by its ID.
-		 * @param payload.domain The TLD to retrieve DNS records from.
+		 * @param payload.domain The domain to retrieve the DNS record from.
 		 * @param payload.record_id The ID of the record to get the details of.
-		 * @returns A promise that resolves with the DNS record or list of DNS records.
+		 * @returns A promise that resolves with the DNS record.
 		 * @example
-		 * client.getDnsRecord({ domain: 'example.com', record_id: '106926652' });
+		 * client.dns.getDnsRecord({ domain: 'example.com', record_id: '106926652' });
 		 */
 		async getDnsRecord(payload: RetrieveDnsRecordPayload): Promise<RetrieveDnsRecordResponse> {
 			const response = await client.request<RetrieveDnsRecordsResponse>(`${BASE_PATH}/retrieve/${payload.domain}/${payload.record_id}`)
@@ -78,7 +78,7 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 
 		/**
 		 * Creates a DNS record on the specified domain.
-		 * @param payload.domain The TLD to retrieve DNS records from.
+		 * @param payload.domain The domain to create the DNS record on.
 		 * @param {string|undefined} payload.name The subdomain for the record being created, not including the domain itself. Leave blank to create a record on the root domain. Use * to create a wildcard record.
 		 * @param payload.type The type of record being created. Valid types are: A, MX, CNAME, ALIAS, TXT, NS, AAAA, SRV, TLSA, CAA, HTTPS, SVCB, SSHFP
 		 * @param payload.content The answer content for the record. See the DNS management popup from the domain management console on the Porkbun website for proper formatting of each record type.
@@ -87,7 +87,7 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * @param {string|undefined} payload.notes Any notes that you'd like to set for the record.
 		 * @returns A promise that resolves with the ID of the newly created record.
 		 * @example
-		 * client.createDnsRecord({ domain: 'example.com', name: 'www', type: 'A', content: '1.1.1.1', ttl: 600 });
+		 * client.dns.createDnsRecord({ domain: 'example.com', name: 'www', type: 'A', content: '1.1.1.1', ttl: 600 });
 		 */
 		createDnsRecord(payload: CreateDnsRecordPayload): Promise<CreateDnsRecordResponse> {
 			const { domain, ...body } = payload;
@@ -96,17 +96,17 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 
 		/**
 		 * Edits a DNS record on the specified domain.
-		 * @param payload.domain The TLD to retrieve DNS records from.
-		 * @param payload.record_id The ID of the DNS record to edit. 
+		 * @param payload.domain The domain containing the DNS record to edit.
+		 * @param payload.record_id The ID of the DNS record to edit.
 		 * @param {string|undefined} payload.name The new subdomain for the record, not including the domain itself. Leave blank to edit a record on the root domain. Use * to edit a wildcard record.
 		 * @param payload.type The new type for the record. Valid types are: A, MX, CNAME, ALIAS, TXT, NS, AAAA, SRV, TLSA, CAA, HTTPS, SVCB, SSHFP
 		 * @param payload.content The new answer content for the record. See the DNS management popup from the domain management console on the Porkbun website for proper formatting of each record type.
 		 * @param {number|undefined} payload.ttl The new time to live in seconds for the record. The minimum and the default is 600 seconds.
 		 * @param {string|undefined} payload.prio The new priority of the record for those that support it.
 		 * @param {string|undefined} payload.notes Any notes that you'd like to set for the record (replaces old notes).
-		 * @returns A promise that resolves successful when the record is edited.
+		 * @returns A promise that resolves successfully when the record is edited.
 		 * @example
-		 * client.editDnsRecordById({ domain: 'example.com', record_id: '106926659', name: 'www', type: 'A', content: '1.1.1.1', ttl: 600 });
+		 * client.dns.editDnsRecordById({ domain: 'example.com', record_id: '106926659', name: 'www', type: 'A', content: '1.1.1.1', ttl: 600 });
 		 */
 		editDnsRecordById(payload: EditDnsRecordByIdPayload): Promise<EditDnsRecordByIdResponse> {
 			const { domain, record_id, ...body } = payload;
@@ -114,17 +114,17 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		},
 
 		/**
-		 * Edit all DNS records for a domain that match a particular subdomain and type.
-		 * @param payload.domain The TLD to retrieve DNS records from.
+		 * Edits all DNS records for a domain that match a particular subdomain and type.
+		 * @param payload.domain The domain containing the DNS records to edit.
 		 * @param payload.type The type to filter by. Valid types are: A, MX, CNAME, ALIAS, TXT, NS, AAAA, SRV, TLSA, CAA, HTTPS, SVCB, SSHFP
-		 * @param payload.subdomain The subdomain to filter by. 
+		 * @param payload.subdomain The subdomain to filter by.
 		 * @param payload.content The new answer content for the record. See the DNS management popup from the domain management console on the Porkbun website for proper formatting of each record type.
 		 * @param {number|undefined} payload.ttl The new time to live in seconds for the record. The minimum and the default is 600 seconds.
 		 * @param {string|undefined} payload.prio The new priority of the record for those that support it.
 		 * @param {string|undefined} payload.notes Any notes that you'd like to set for the record (replaces old notes).
-		 * @returns A promise that resolves successful when the records are edited.
+		 * @returns A promise that resolves successfully when the records are edited.
 		 * @example
-		 * client.editDnsRecordsBySubdomain({ domain: 'example.com', type: 'A', subdomain: 'hello', content: '1.1.1.1', ttl: 600 });
+		 * client.dns.editDnsRecordsBySubdomain({ domain: 'example.com', type: 'A', subdomain: 'hello', content: '1.1.1.1', ttl: 600 });
 		 */
 		editDnsRecordsBySubdomain(payload: EditDnsRecordsBySubdomainPayload): Promise<EditDnsRecordsBySubdomainResponse> {
 			const { domain, type, subdomain, ...body } = payload;
@@ -132,25 +132,25 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		},
 
 		/**
-		 * Delete a specific DNS record on a domain.
-		 * @param payload.domain The TLD to delete the DNS record from.
-		 * @param payload.record_id The ID of the DNS record to delete. 
-		 * @returns A promise that resolves successful when the record is deleted.
+		 * Deletes a specific DNS record on a domain.
+		 * @param payload.domain The domain to delete the DNS record from.
+		 * @param payload.record_id The ID of the DNS record to delete.
+		 * @returns A promise that resolves successfully when the record is deleted.
 		 * @example
-		 * client.deleteDnsRecordById({ domain: 'example.com', record_id: '106926659' });
+		 * client.dns.deleteDnsRecordById({ domain: 'example.com', record_id: '106926659' });
 		 */
 		deleteDnsRecordById(payload: DeleteDnsRecordByIdPayload): Promise<DeleteDnsRecordByIdResponse> {
 			return client.request<DeleteDnsRecordByIdResponse>(`${BASE_PATH}/delete/${payload.domain}/${payload.record_id}`)
 		},
 
 		/**
-		 * Delete all DNS records for a domain that match a particular subdomain and type.
-		 * @param payload.domain The TLD to retrieve DNS records from.
+		 * Deletes all DNS records for a domain that match a particular subdomain and type.
+		 * @param payload.domain The domain to delete the DNS records from.
 		 * @param payload.type The type to filter by. Valid types are: A, MX, CNAME, ALIAS, TXT, NS, AAAA, SRV, TLSA, CAA, HTTPS, SVCB, SSHFP
-		 * @param payload.subdomain The subdomain to filter by. 
-		 * @returns A promise that resolves successful when the records are deleted.
+		 * @param payload.subdomain The subdomain to filter by.
+		 * @returns A promise that resolves successfully when the records are deleted.
 		 * @example
-		 * client.deleteDnsRecordsBySubdomain({ domain: 'example.com', type: 'A', subdomain: 'hello' });
+		 * client.dns.deleteDnsRecordsBySubdomain({ domain: 'example.com', type: 'A', subdomain: 'hello' });
 		 */
 		deleteDnsRecordsBySubdomain(payload: DeleteDnsRecordsBySubdomainPayload): Promise<DeleteDnsRecordsBySubdomainResponse> {
 			const { domain, type, subdomain, ...body } = payload;
@@ -158,7 +158,7 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		},
 
 		/**
-		 * Create a DNSSEC record at the registry. Please note that DNSSEC creation differs at the various registries and some elements may or may not be required. Most often the max sig life and key data elements are not required.
+		 * Creates a DNSSEC record at the registry. Please note that DNSSEC creation differs at the various registries and some elements may or may not be required. Most often the max sig life and key data elements are not required.
 		 *
 		 * @param payload.domain The domain to create the DNSSEC record for.
 		 * @param {number|undefined} payload.keyTag Key Tag.
@@ -172,7 +172,7 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * @param {string|undefined} payload.keyDataPubKey Key Data Public Key.
 		 * @returns A promise that resolves successfully when the record is created.
 		 * @example
-		 * client.createDnssecRecord({ domain: 'example.com', keyTag: 12345, alg: 13, digestType: 2, digest: 'abc123...' });
+		 * client.dns.createDnssecRecord({ domain: 'example.com', keyTag: 12345, alg: 13, digestType: 2, digest: 'abc123...' });
 		 */
 		createDnssecRecord(payload: CreateDnssecRecordPayload): Promise<CreateDnssecRecordResponse> {
 			const { domain, ...body } = payload;
@@ -180,25 +180,25 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		},
 
 		/**
-		 * Delete a DNSSEC record associated with the domain at the registry. Please note that most registries will delete all records with matching data, not just the record with the matching key tag.
+		 * Deletes a DNSSEC record associated with the domain at the registry. Please note that most registries will delete all records with matching data, not just the record with the matching key tag.
 		 *
-		 * @param payload.domain The domain to delete the DNSSEC record on.
+		 * @param payload.domain The domain to delete the DNSSEC record from.
 		 * @param payload.keyTag The key tag value for the DNSSEC record.
 		 * @returns A promise that resolves successfully when the record is deleted.
 		 * @example
-		 * client.deleteDnssecRecord({ domain: 'example.com', keyTag: 12345 });
+		 * client.dns.deleteDnssecRecord({ domain: 'example.com', keyTag: 12345 });
 		 */
 		deleteDnssecRecord(payload: DeleteDnssecRecordPayload): Promise<DeleteDnssecRecordResponse> {
 			return client.request<DeleteDnssecRecordResponse>(`${BASE_PATH}/deleteDnssecRecord/${payload.domain}/${payload.keyTag}`)
 		},
 
 		/**
-		 * Gets all DNSSEC records at the registry for a specific domain. 
+		 * Gets all DNSSEC records at the registry for a specific domain.
 		 *
 		 * @param payload.domain The domain to get the DNSSEC records for.
-		 * @returns A promise that returns an object of all the DNSSEC records for the specified domain. Null if empty.
+		 * @returns A promise that resolves with the DNSSEC records for the specified domain. Null if empty.
 		 * @example
-		 * client.getDnssecRecords({ domain: 'example.com' });
+		 * client.dns.getDnssecRecords({ domain: 'example.com' });
 		 */
 		getDnssecRecords(payload: GetDnssecRecordsPayload): Promise<GetDnssecRecordResponse> {
 			return client.request<GetDnssecRecordResponse>(`${BASE_PATH}/getDnssecRecords/${payload.domain}`)
