@@ -27,9 +27,9 @@ export interface DnsRecord {
 }
 
 export interface DnssecRecord {
-	keyTag: string;
-	alg: string;
-	digestType: string;
+	keyTag: number;
+	alg: number;
+	digestType: number;
 	digest: string;
 }
 
