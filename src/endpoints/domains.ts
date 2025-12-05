@@ -19,6 +19,8 @@ import type {
 	DeleteUrlForwardResponse,
 } from "../types/domains";
 
+export type DomainsNamespace = ReturnType<typeof createDomainsNamespace>;
+
 export const createDomainsNamespace = (client: PorkbunClient) => {
 	const BASE_PATH = '/domain'
 

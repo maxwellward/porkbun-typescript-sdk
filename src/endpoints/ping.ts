@@ -1,6 +1,8 @@
 import type { PorkbunClient } from "../client";
 import type { PingResponse } from "../types/ping";
 
+export type PingMethod = ReturnType<typeof createPingMethod>;
+
 export const createPingMethod = (client: PorkbunClient) => {
 	/**
 	 * Pings the Porkbun API to verify connectivity and authentication.

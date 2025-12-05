@@ -1,4 +1,4 @@
-export { PorkbunClient, PorkbunBaseResponse, PorkbunClientOptions } from "./client"
+export { PorkbunClient, PorkbunBaseResponse, PorkbunClientOptions, DnsNamespace, DomainsNamespace, PingMethod, SslNamespace } from "./client"
 
 export * from "./types/ping"
 export * from "./types/domains"

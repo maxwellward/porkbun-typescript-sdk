@@ -1,5 +1,7 @@
 import type { PorkbunClient } from "../client";
-import { RetrieveSslBundlePayload, RetrieveSslBundleResponse } from "../types/ssl";
+import type { RetrieveSslBundlePayload, RetrieveSslBundleResponse } from "../types/ssl";
+
+export type SslNamespace = ReturnType<typeof createSslNamespace>;
 
 export const createSslNamespace = (client: PorkbunClient) => {
 	const BASE_PATH = '/ssl'

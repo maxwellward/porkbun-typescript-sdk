@@ -1,7 +1,7 @@
-import { createDnsNamespace } from "./endpoints/dns";
-import { createDomainsNamespace } from "./endpoints/domains";
-import { createPingMethod } from "./endpoints/ping";
-import { createSslNamespace } from "./endpoints/ssl";
+import { createDnsNamespace, type DnsNamespace } from "./endpoints/dns";
+import { createDomainsNamespace, type DomainsNamespace } from "./endpoints/domains";
+import { createPingMethod, type PingMethod } from "./endpoints/ping";
+import { createSslNamespace, type SslNamespace } from "./endpoints/ssl";
 
 export interface PorkbunClientOptions {
 	apiKey: string;
@@ -77,8 +77,10 @@ export class PorkbunClient {
 		return data;
 	}
 
-	ping: ReturnType<typeof createPingMethod>
-	domains: ReturnType<typeof createDomainsNamespace>
-	dns: ReturnType<typeof createDnsNamespace>
-	ssl: ReturnType<typeof createSslNamespace>
+	ping: PingMethod
+	domains: DomainsNamespace
+	dns: DnsNamespace
+	ssl: SslNamespace
 }
+
+export type { DnsNamespace, DomainsNamespace, PingMethod, SslNamespace };

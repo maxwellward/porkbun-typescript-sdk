@@ -1,6 +1,8 @@
 import type { PorkbunClient } from "../client";
 import type { CreateDnsRecordPayload, CreateDnsRecordResponse, CreateDnssecRecordPayload, CreateDnssecRecordResponse, DeleteDnsRecordByIdPayload, DeleteDnsRecordByIdResponse, DeleteDnsRecordsBySubdomainPayload, DeleteDnsRecordsBySubdomainResponse, DeleteDnssecRecordPayload, DeleteDnssecRecordResponse, EditDnsRecordByIdPayload, EditDnsRecordByIdResponse, EditDnsRecordsBySubdomainPayload, EditDnsRecordsBySubdomainResponse, GetDnssecRecordResponse, GetDnssecRecordsPayload, RetrieveDnsRecordPayload, RetrieveDnsRecordResponse, RetrieveDnsRecordsBySubdomainPayload, RetrieveDnsRecordsBySubdomainResponse, RetrieveDnsRecordsByTypePayload, RetrieveDnsRecordsByTypeResponse, RetrieveDnsRecordsPayload, RetrieveDnsRecordsResponse } from "../types/dns";
 
+export type DnsNamespace = ReturnType<typeof createDnsNamespace>;
+
 export const createDnsNamespace = (client: PorkbunClient) => {
 	const BASE_PATH = '/dns'
 
