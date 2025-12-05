@@ -1,26 +1,36 @@
 import type { PorkbunClient } from "../client";
-import { CreateDnsRecordPayload, CreateDnsRecordResponse, CreateDnssecRecordPayload, CreateDnssecRecordResponse, DeleteDnsRecordByIdPayload, DeleteDnsRecordByIdResponse, DeleteDnsRecordsBySubdomainPayload, DeleteDnsRecordsBySubdomainResponse, DeleteDnssecRecordPayload, DeleteDnssecRecordResponse, EditDnsRecordByIdPayload, EditDnsRecordByIdResponse, EditDnsRecordsBySubdomainPayload, EditDnsRecordsBySubdomainResponse, GetDnssecRecordResponse, GetDnssecRecordsPayload, RetrieveDnsRecordsBySubdomainPayload, RetrieveDnsRecordsBySubdomainResponse, RetrieveDnsRecordsByTypePayload, RetrieveDnsRecordsByTypeResponse, RetrieveDnsRecordsPayload, RetrieveDnsRecordsResponse } from "../types/dns";
+import { CreateDnsRecordPayload, CreateDnsRecordResponse, CreateDnssecRecordPayload, CreateDnssecRecordResponse, DeleteDnsRecordByIdPayload, DeleteDnsRecordByIdResponse, DeleteDnsRecordsBySubdomainPayload, DeleteDnsRecordsBySubdomainResponse, DeleteDnssecRecordPayload, DeleteDnssecRecordResponse, EditDnsRecordByIdPayload, EditDnsRecordByIdResponse, EditDnsRecordsBySubdomainPayload, EditDnsRecordsBySubdomainResponse, GetDnssecRecordResponse, GetDnssecRecordsPayload, RetrieveDnsRecordPayload, RetrieveDnsRecordResponse, RetrieveDnsRecordsBySubdomainPayload, RetrieveDnsRecordsBySubdomainResponse, RetrieveDnsRecordsByTypePayload, RetrieveDnsRecordsByTypeResponse, RetrieveDnsRecordsPayload, RetrieveDnsRecordsResponse } from "../types/dns";
 
 export const createDnsNamespace = (client: PorkbunClient) => {
 	const BASE_PATH = '/dns'
 
 	return {
 		/**
-		 * Retrieves all DNS records associated with a domain or a single record for a particular record ID.
+		 * Retrieves all DNS records associated with a domain.
 		 * @param payload.domain The TLD to retrieve DNS records from.
-		 * @param {string|undefined} payload.record_id The ID of the record to get the details of.
 		 * @returns A promise that resolves with the DNS record or list of DNS records.
 		 * @example
 		 * client.getDnsRecords({ domain: 'example.com' });
-		 * @example
-		 * client.getDnsRecords({ domain: 'example.com', record_id: '106926652' });
 		 */
 		getDnsRecords(payload: RetrieveDnsRecordsPayload): Promise<RetrieveDnsRecordsResponse> {
-			if (payload.record_id) {
-				return client.request<RetrieveDnsRecordsResponse>(`${BASE_PATH}/retrieve/${payload.domain}/${payload.record_id}`)
-			} else {
-				return client.request<RetrieveDnsRecordsResponse>(`${BASE_PATH}/retrieve/${payload.domain}`)
-			}
+			return client.request<RetrieveDnsRecordsResponse>(`${BASE_PATH}/retrieve/${payload.domain}`)
+		},
+
+		/**
+		 * Retrieves a DNS record by its ID.
+		 * @param payload.domain The TLD to retrieve DNS records from.
+		 * @param payload.record_id The ID of the record to get the details of.
+		 * @returns A promise that resolves with the DNS record or list of DNS records.
+		 * @example
+		 * client.getDnsRecord({ domain: 'example.com', record_id: '106926652' });
+		 */
+		async getDnsRecord(payload: RetrieveDnsRecordPayload): Promise<RetrieveDnsRecordResponse> {
+			const response = await client.request<RetrieveDnsRecordsResponse>(`${BASE_PATH}/retrieve/${payload.domain}/${payload.record_id}`)
+			const { records, ...rest } = response;
+			return {
+				...rest,
+				record: records?.[0] ?? null,
+			};
 		},
 
 		/**
