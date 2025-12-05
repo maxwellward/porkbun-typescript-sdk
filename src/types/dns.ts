@@ -17,3 +17,20 @@ export interface RetrieveDnsRecordsPayload {
 export interface RetrieveDnsRecordsResponse extends PorkbunBaseResponse {
 	records: DnsRecord[];
 }
+
+export interface RetrieveDnsRecordsByTypePayload {
+	domain: string;
+	type: string;
+}
+export interface RetrieveDnsRecordsByTypeResponse extends PorkbunBaseResponse {
+	records: DnsRecord[];
+}
+
+export interface RetrieveDnsRecordsBySubdomainPayload {
+	domain: string;
+	type: string;
+	subdomain: string;
+}
+export interface RetrieveDnsRecordsBySubdomainResponse extends PorkbunBaseResponse {
+	records: DnsRecord[];
+}
