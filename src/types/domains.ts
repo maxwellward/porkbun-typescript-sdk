@@ -107,3 +107,23 @@ export type GlueRecord = [string, GlueRecordAddresses];
 export interface GetGlueRecordsResponse extends PorkbunBaseResponse {
 	hosts?: GlueRecord[];
 }
+
+export interface CreateGluePayload {
+	domain: string;
+	glue_host_subdomain: string;
+	ips: string[];
+}
+export interface CreateGlueResponse extends PorkbunBaseResponse {}
+
+export interface UpdateGluePayload {
+	domain: string;
+	glue_host_subdomain: string;
+	ips: string[];
+}
+export interface UpdateGlueResponse extends PorkbunBaseResponse {}
+
+export interface DeleteGluePayload {
+	domain: string;
+	glue_host_subdomain: string;
+}
+export interface DeleteGlueResponse extends PorkbunBaseResponse {}

@@ -10,6 +10,12 @@ import type {
 	AddUrlForwardPayload,
 	AddUrlForwardResponse,
 	DeleteUrlForwardPayload,
+	CreateGluePayload,
+	CreateGlueResponse,
+	UpdateGlueResponse,
+	UpdateGluePayload,
+	DeleteGluePayload,
+	DeleteGlueResponse,
 } from "../types/domains";
 
 export const createDomainsNamespace = (client: PorkbunClient) => {
@@ -128,6 +134,44 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 */
 		getGlueRecords(payload: GetGlueRecordsPayload): Promise<GetGlueRecordsResponse> {
 			return client.request<GetGlueRecordsResponse>(`${BASE_PATH}/getGlue/${payload.domain}`)
+		},
+
+		/**
+		 * Create glue record for a domain.
+		 * @param payload.domain The TLD to modify without the protocol or any path.
+		 * @param payload.glue_host_subdomain
+		 * @param payload.ips An array of IP addresses.
+		 * @example
+		 * client.createGlue({ domain: 'example.com', glue_host_subdomain: "ns1", ips: ["192.168.1.1", "2001:db8:3333:4444:5555:6666:7777:8888"] });
+		 */
+		createGlue(payload: CreateGluePayload): Promise<CreateGlueResponse> {
+			const { domain, glue_host_subdomain, ...body } = payload;
+			return client.request<CreateGlueResponse>(`${BASE_PATH}/createGlue/${payload.domain}/${payload.glue_host_subdomain}`, body)
+		},
+
+		/**
+		 * Update glue record for a domain.
+		 * @param payload.domain The TLD to modify without the protocol or any path.
+		 * @param payload.glue_host_subdomain The glue host subdomain to modify.
+		 * @param payload.ips An array of IP addresses.
+		 * @example
+		 * client.updateGlue({ domain: 'example.com', glue_host_subdomain: "ns1", ips: ["192.168.1.1", "2001:db8:3333:4444:5555:6666:7777:8888"] });
+		 */
+		updateGlue(payload: UpdateGluePayload): Promise<UpdateGlueResponse> {
+			const { domain, glue_host_subdomain, ...body } = payload;
+			return client.request<UpdateGlueResponse>(`${BASE_PATH}/updateGlue/${payload.domain}/${payload.glue_host_subdomain}`, body)
+		},
+
+		/**
+		 * Delete a glue record for a domain.
+		 * @param payload.domain The TLD to modify without the protocol or any path.
+		 * @param payload.glue_host_subdomain The glue host subdomain to delete.
+		 * @example
+		 * client.deleteGlue({ domain: 'example.com', glue_host_subdomain: "ns1" });
+		 */
+		deleteGlue(payload: DeleteGluePayload): Promise<DeleteGlueResponse> {
+			const { domain, glue_host_subdomain, ...body } = payload;
+			return client.request<DeleteGlueResponse>(`${BASE_PATH}/deleteGlue/${payload.domain}/${payload.glue_host_subdomain}`, body)
 		},
 	}
 }
