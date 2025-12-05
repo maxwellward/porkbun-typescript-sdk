@@ -80,6 +80,22 @@ export interface GetUrlForwardingResponse extends PorkbunBaseResponse {
 	]
 }
 
+export interface AddUrlForwardPayload {
+	domain: string;
+	subdomain?: string;
+	location: string;
+	type: string;
+	includePath: string;
+	wildcard: string;	
+}
+export interface AddUrlForwardResponse extends PorkbunBaseResponse {}
+
+export interface DeleteUrlForwardPayload {
+	domain: string;
+	forward_id: string;	
+}
+export interface DeleteUrlForwardResponse extends PorkbunBaseResponse {}
+
 export interface GetGlueRecordsPayload {
 	domain: string;
 }

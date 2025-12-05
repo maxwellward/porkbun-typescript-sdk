@@ -7,15 +7,25 @@ export interface PorkbunClientOptions {
 	baseUrl?: string;
 }
 
+/**
+ * Base response structure returned by all Porkbun API endpoints.
+ */
 export interface PorkbunBaseResponse {
-	status: string,
-	message?: string,
+	/** The status of the request. "SUCCESS" indicates a successful response. */
+	status: string;
+	/** An optional message providing additional details about the response. */
+	message?: string;
+	/** Rate limit information for the API. */
 	limits?: {
-		TTL: number,
-		limit: number,
-		used: number,
-		naturalLanguage: string
-	}
+		/** Time-to-live in seconds until the rate limit resets. */
+		TTL: number;
+		/** Maximum number of requests allowed in the rate limit window. */
+		limit: number;
+		/** Number of requests used in the current rate limit window. */
+		used: number;
+		/** Human-readable description of the rate limit status. */
+		naturalLanguage: string;
+	};
 }
 
 export class PorkbunClient {

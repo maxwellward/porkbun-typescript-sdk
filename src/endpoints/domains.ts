@@ -7,6 +7,9 @@ import type {
 	GetGlueRecordsPayload, GetGlueRecordsResponse,
 	UpdateNsPayload,
 	UpdateNsResponse,
+	AddUrlForwardPayload,
+	AddUrlForwardResponse,
+	DeleteUrlForwardPayload,
 } from "../types/domains";
 
 export const createDomainsNamespace = (client: PorkbunClient) => {
@@ -31,7 +34,7 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 
 		/**
 		 * Checks the availability of a domain
-		 * @param payload.domain - The TLD to check without the protocol or any path.
+		 * @param payload.domain The TLD to check without the protocol or any path.
 		 * @returns A promise that resolves with details about the domain, if it's available, and any additional purchase information.
 		 * @example
 		 * client.checkDomain({ domain: 'example.com' });
@@ -42,7 +45,7 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 
 		/**
 		 * Gets the authoritative name servers listed at the registry for a domain.
-		 * @param payload.domain - The TLD to check without the protocol or any path.
+		 * @param payload.domain The TLD to check without the protocol or any path.
 		 * @returns A promise that resolves with an array of nameservers.
 		 * @example
 		 * client.getNameservers({ domain: 'example.com' });
@@ -60,7 +63,7 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 
 		/**
 		 * Updates the authoritative name servers listed at the registry for a domain.
-		 * @param payload.domain - The TLD to update without the protocol or any path.
+		 * @param payload.domain The TLD to update without the protocol or any path.
 		 * @returns A promise with an operation status.
 		 * @example
 		 * client.updateNameservers({ domain: 'example.com', ns: [ "curitiba.ns.porkbun.com", "fortaleza.ns.porkbun.com", "maceio.ns.porkbun.com", "salvador.ns.porkbun.com" ] });
@@ -79,7 +82,7 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 
 		/**
 		 * Gets a list of URL forwards for a domain
-		 * @param payload.domain - The TLD to check without the protocol or any path.
+		 * @param payload.domain The TLD to check without the protocol or any path.
 		 * @returns A promise that resolves with an array of forwards.
 		 * @example
 		 * client.getUrlForwarding({ domain: 'example.com' });
@@ -89,8 +92,36 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		},
 
 		/**
+		 * Adds a URL forward to a domain
+		 * @param payload.domain The TLD to modify without the protocol or any path.
+		 * @param {string|undefined} payload.subdomain A subdomain that you would like to add URL forwarding for. Leave this blank to forward the root domain.
+		 * @param payload.location Where you'd like to forward the domain to.
+		 * @param payload.type The type of forward. Valid types are: temporary or permanent
+		 * @param payload.includePath Whether or not to include the URI path in the redirection. Valid options are yes or no.
+		 * @param payload.wildcard Also forward all subdomains of the domain. Valid options are yes or no.
+		 * @example
+		 * client.addUrlForward({ domain: 'example.com', subdomain: "blog", location: "https://blog.example.com", type: "temporary", includePath: "no", wildcard: "yes" });
+		 */
+		addUrlForward(payload: AddUrlForwardPayload): Promise<AddUrlForwardResponse> {
+			const { domain, ...body } = payload;
+			return client.request<AddUrlForwardResponse>(`${BASE_PATH}/addUrlForward/${payload.domain}`, body)
+		},
+
+		/**
+		 * Deletes a URL forward from a domain
+		 * @param payload.domain The TLD to modify without the protocol or any path.
+		 * @param payload.record The ID of the record to delete.
+		 * @example
+		 * client.deleteUrlForward({ domain: 'example.com', forward_id: '22049209' });
+		 */
+		deleteUrlForward(payload: DeleteUrlForwardPayload): Promise<DeleteUrlForwardPayload> {
+			return client.request<DeleteUrlForwardPayload>(`${BASE_PATH}/deleteUrlForward/${payload.domain}/${payload.forward_id}`)
+		},
+
+
+		/**
 		 * Gets a list of hosts and their glue records for a domain.
-		 * @param payload.domain - The TLD to check without the protocol or any path.
+		 * @param payload.domain The TLD to check without the protocol or any path.
 		 * @returns A promise that resolves with an array of hosts and their glue records. Null if empty.
 		 * @example
 		 * client.getGlueRecords({ domain: 'example.com' });
