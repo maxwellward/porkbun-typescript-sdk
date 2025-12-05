@@ -5,6 +5,8 @@ import type {
 	GetNsPayload, GetNsResponse,
 	GetUrlForwardingPayload, GetUrlForwardingResponse,
 	GetGlueRecordsPayload, GetGlueRecordsResponse,
+	UpdateNsPayload,
+	UpdateNsResponse,
 } from "../types/domains";
 
 export const createDomainsNamespace = (client: PorkbunClient) => {
@@ -46,14 +48,33 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * client.getNameservers({ domain: 'example.com' });
 		 */
 		getNameservers(payload: GetNsPayload): Promise<GetNsResponse> {
-			return this.getNs(payload);
+			return client.request<GetNsResponse>(`${BASE_PATH}/getNs/${payload.domain}`)
 		},
 
 		/**
 		 * @see {@link getNameservers}
 		 */
 		getNs(payload: GetNsPayload): Promise<GetNsResponse> {
-			return client.request<GetNsResponse>(`${BASE_PATH}/getNs/${payload.domain}`)
+			return this.getNs(payload);
+		},
+
+		/**
+		 * Updates the authoritative name servers listed at the registry for a domain.
+		 * @param payload.domain - The TLD to update without the protocol or any path.
+		 * @returns A promise with an operation status.
+		 * @example
+		 * client.updateNameservers({ domain: 'example.com', ns: [ "curitiba.ns.porkbun.com", "fortaleza.ns.porkbun.com", "maceio.ns.porkbun.com", "salvador.ns.porkbun.com" ] });
+		 */
+		updateNameservers(payload: UpdateNsPayload): Promise<UpdateNsResponse> {
+			const { domain, ...body } = payload;
+			return client.request<UpdateNsResponse>(`${BASE_PATH}/updateNs/${payload.domain}`, body);
+		},
+
+		/**
+		 * @see {@link updateNameservers}
+		 */
+		updateNs(payload: UpdateNsPayload): Promise<UpdateNsResponse> {
+			return this.updateNameservers(payload);
 		},
 
 		/**

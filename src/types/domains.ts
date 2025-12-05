@@ -58,6 +58,12 @@ export interface GetNsResponse extends PorkbunBaseResponse {
 	ns: string[]
 }
 
+export interface UpdateNsPayload {
+	domain: string;
+	ns: string[]
+}
+export interface UpdateNsResponse extends PorkbunBaseResponse {}
+
 export interface GetUrlForwardingPayload {
 	domain: string;
 }
