@@ -3,7 +3,7 @@ import type { PorkbunBaseResponse } from "../client";
 export interface DnsRecord {
 	id: string,
 	name: string,
-	type: string,
+	type: `${DNS_RECORD_TYPE}`,
 	content: string,
 	ttl: string,
 	prio: string,
@@ -51,7 +51,7 @@ export interface RetrieveDnsRecordResponse extends PorkbunBaseResponse {
 
 export interface RetrieveDnsRecordsByTypePayload {
 	domain: string;
-	type: string;
+	type: `${DNS_RECORD_TYPE}`;
 }
 export interface RetrieveDnsRecordsByTypeResponse extends PorkbunBaseResponse {
 	records: DnsRecord[];
@@ -59,7 +59,7 @@ export interface RetrieveDnsRecordsByTypeResponse extends PorkbunBaseResponse {
 
 export interface RetrieveDnsRecordsBySubdomainPayload {
 	domain: string;
-	type: string;
+	type: `${DNS_RECORD_TYPE}`;
 	subdomain: string;
 }
 export interface RetrieveDnsRecordsBySubdomainResponse extends PorkbunBaseResponse {
