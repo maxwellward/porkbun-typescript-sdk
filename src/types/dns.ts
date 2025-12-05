@@ -35,6 +35,7 @@ export enum DNS_RECORD_TYPE {
 
 export interface RetrieveDnsRecordsPayload {
 	domain: string;
+	type?: `${DNS_RECORD_TYPE}`;
 }
 export interface RetrieveDnsRecordsResponse extends PorkbunBaseResponse {
 	records: DnsRecord[];

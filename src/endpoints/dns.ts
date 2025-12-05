@@ -8,12 +8,25 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		/**
 		 * Retrieves all DNS records associated with a domain.
 		 * @param payload.domain The TLD to retrieve DNS records from.
-		 * @returns A promise that resolves with the DNS record or list of DNS records.
+		 * @param payload.type The type of DNS record to filter by.
+		 * @returns A promise that resolves with the list of DNS records for the domain (filtered if payload.type is provided).
 		 * @example
-		 * client.getDnsRecords({ domain: 'example.com' });
+		 * client.getDnsRecords({ domain: 'example.com', });
+		 * @example
+		 * client.getDnsRecords({ domain: 'example.com', type: 'CNAME' });
 		 */
-		getDnsRecords(payload: RetrieveDnsRecordsPayload): Promise<RetrieveDnsRecordsResponse> {
-			return client.request<RetrieveDnsRecordsResponse>(`${BASE_PATH}/retrieve/${payload.domain}`)
+		async getDnsRecords(payload: RetrieveDnsRecordsPayload): Promise<RetrieveDnsRecordsResponse> {
+			const response = await client.request<RetrieveDnsRecordsResponse>(`${BASE_PATH}/retrieve/${payload.domain}`)
+			let { records, ...rest } = response;
+
+			if (payload.type) {
+				records = records.filter((f) => f.type === payload.type);
+			}
+
+			return {
+				...rest,
+				records,
+			};
 		},
 
 		/**
