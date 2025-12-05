@@ -16,6 +16,7 @@ import type {
 	UpdateGluePayload,
 	DeleteGluePayload,
 	DeleteGlueResponse,
+	DeleteUrlForwardResponse,
 } from "../types/domains";
 
 export const createDomainsNamespace = (client: PorkbunClient) => {
@@ -123,8 +124,8 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * @example
 		 * client.domains.deleteUrlForward({ domain: 'example.com', forward_id: '22049209' });
 		 */
-		deleteUrlForward(payload: DeleteUrlForwardPayload): Promise<DeleteUrlForwardPayload> {
-			return client.request<DeleteUrlForwardPayload>(`${BASE_PATH}/deleteUrlForward/${payload.domain}/${payload.forward_id}`)
+		deleteUrlForward(payload: DeleteUrlForwardPayload): Promise<DeleteUrlForwardResponse> {
+			return client.request<DeleteUrlForwardResponse>(`${BASE_PATH}/deleteUrlForward/${payload.domain}/${payload.forward_id}`)
 		},
 
 
