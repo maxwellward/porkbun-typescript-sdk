@@ -62,22 +62,20 @@ export interface UpdateNsPayload {
 	domain: string;
 	ns: string[]
 }
-export interface UpdateNsResponse extends PorkbunBaseResponse {}
+export interface UpdateNsResponse extends PorkbunBaseResponse { }
 
 export interface GetUrlForwardingPayload {
 	domain: string;
 }
 export interface GetUrlForwardingResponse extends PorkbunBaseResponse {
-	forwards: [
-		{
-			id: string,
-			subdomain: string,
-			location: string,
-			type: string,
-			includePath: string,
-			wildcard: string,
-		}
-	]
+	forwards: {
+		id: string,
+		subdomain: string,
+		location: string,
+		type: string,
+		includePath: string,
+		wildcard: string,
+	}[]
 }
 
 export interface AddUrlForwardPayload {
@@ -86,15 +84,15 @@ export interface AddUrlForwardPayload {
 	location: string;
 	type: string;
 	includePath: string;
-	wildcard: string;	
+	wildcard: string;
 }
-export interface AddUrlForwardResponse extends PorkbunBaseResponse {}
+export interface AddUrlForwardResponse extends PorkbunBaseResponse { }
 
 export interface DeleteUrlForwardPayload {
 	domain: string;
-	forward_id: string;	
+	forward_id: string;
 }
-export interface DeleteUrlForwardResponse extends PorkbunBaseResponse {}
+export interface DeleteUrlForwardResponse extends PorkbunBaseResponse { }
 
 export interface GetGlueRecordsPayload {
 	domain: string;
@@ -113,17 +111,17 @@ export interface CreateGluePayload {
 	glue_host_subdomain: string;
 	ips: string[];
 }
-export interface CreateGlueResponse extends PorkbunBaseResponse {}
+export interface CreateGlueResponse extends PorkbunBaseResponse { }
 
 export interface UpdateGluePayload {
 	domain: string;
 	glue_host_subdomain: string;
 	ips: string[];
 }
-export interface UpdateGlueResponse extends PorkbunBaseResponse {}
+export interface UpdateGlueResponse extends PorkbunBaseResponse { }
 
 export interface DeleteGluePayload {
 	domain: string;
 	glue_host_subdomain: string;
 }
-export interface DeleteGlueResponse extends PorkbunBaseResponse {}
+export interface DeleteGlueResponse extends PorkbunBaseResponse { }

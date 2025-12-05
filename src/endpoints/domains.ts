@@ -177,8 +177,7 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * client.domains.deleteGlue({ domain: 'example.com', glue_host_subdomain: 'ns1' });
 		 */
 		deleteGlue(payload: DeleteGluePayload): Promise<DeleteGlueResponse> {
-			const { domain, glue_host_subdomain, ...body } = payload;
-			return client.request<DeleteGlueResponse>(`${BASE_PATH}/deleteGlue/${domain}/${glue_host_subdomain}`, body)
+			return client.request<DeleteGlueResponse>(`${BASE_PATH}/deleteGlue/${payload.domain}/${payload.glue_host_subdomain}`)
 		},
 	}
 }
