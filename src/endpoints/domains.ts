@@ -33,7 +33,7 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * @param payload.domain - The TLD to check without the protocol or any path.
 		 * @returns A promise that resolves with details about the domain, if it's available, and any additional purchase information.
 		 * @example
-		 * client.checkDomain('example.com');
+		 * client.checkDomain({ domain: 'example.com' });
 		 */
 		checkDomain(payload: CheckDomainPayload): Promise<CheckDomainResponse> {
 			return client.request<CheckDomainResponse>(`${BASE_PATH}/checkDomain/${payload.domain}`)
@@ -44,7 +44,14 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * @param payload.domain - The TLD to check without the protocol or any path.
 		 * @returns A promise that resolves with an array of nameservers.
 		 * @example
-		 * client.getNs('example.com');
+		 * client.getNameservers({ domain: 'example.com' });
+		 */
+		getNameservers(payload: GetNsPayload): Promise<GetNsResponse> {
+			return this.getNs(payload);
+		},
+
+		/**
+		 * @see {@link getNameservers}
 		 */
 		getNs(payload: GetNsPayload): Promise<GetNsResponse> {
 			return client.request<GetNsResponse>(`${BASE_PATH}/getNs/${payload.domain}`)
@@ -55,7 +62,7 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * @param payload.domain - The TLD to check without the protocol or any path.
 		 * @returns A promise that resolves with an array of forwards.
 		 * @example
-		 * client.getUrlForwarding('example.com');
+		 * client.getUrlForwarding({ domain: 'example.com' });
 		 */
 		getUrlForwarding(payload: GetUrlForwardingPayload): Promise<GetUrlForwardingResponse> {
 			return client.request<GetUrlForwardingResponse>(`${BASE_PATH}/getUrlForwarding/${payload.domain}`)
