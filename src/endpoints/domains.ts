@@ -78,7 +78,7 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 */
 		updateNameservers(payload: UpdateNsPayload): Promise<UpdateNsResponse> {
 			const { domain, ...body } = payload;
-			return client.request<UpdateNsResponse>(`${BASE_PATH}/updateNs/${payload.domain}`, body);
+			return client.request<UpdateNsResponse>(`${BASE_PATH}/updateNs/${domain}`, body);
 		},
 
 		/**
@@ -151,7 +151,7 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 */
 		createGlue(payload: CreateGluePayload): Promise<CreateGlueResponse> {
 			const { domain, glue_host_subdomain, ...body } = payload;
-			return client.request<CreateGlueResponse>(`${BASE_PATH}/createGlue/${payload.domain}/${payload.glue_host_subdomain}`, body)
+			return client.request<CreateGlueResponse>(`${BASE_PATH}/createGlue/${domain}/${glue_host_subdomain}`, body)
 		},
 
 		/**
@@ -178,7 +178,7 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 */
 		deleteGlue(payload: DeleteGluePayload): Promise<DeleteGlueResponse> {
 			const { domain, glue_host_subdomain, ...body } = payload;
-			return client.request<DeleteGlueResponse>(`${BASE_PATH}/deleteGlue/${payload.domain}/${payload.glue_host_subdomain}`, body)
+			return client.request<DeleteGlueResponse>(`${BASE_PATH}/deleteGlue/${domain}/${glue_host_subdomain}`, body)
 		},
 	}
 }
