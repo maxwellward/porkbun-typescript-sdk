@@ -1,6 +1,7 @@
 import { createDnsNamespace } from "./endpoints/dns";
 import { createDomainsNamespace } from "./endpoints/domains";
 import { createPingMethod } from "./endpoints/ping";
+import { createSslNamespace } from "./endpoints/ssl";
 
 export interface PorkbunClientOptions {
 	apiKey: string;
@@ -43,6 +44,7 @@ export class PorkbunClient {
 		this.ping = createPingMethod(this);
 		this.domains = createDomainsNamespace(this);
 		this.dns = createDnsNamespace(this);
+		this.ssl = createSslNamespace(this);
 	}
 
 	async request<T>(path: string, payload?: object): Promise<T> {
@@ -78,4 +80,5 @@ export class PorkbunClient {
 	ping: ReturnType<typeof createPingMethod>
 	domains: ReturnType<typeof createDomainsNamespace>
 	dns: ReturnType<typeof createDnsNamespace>
+	ssl: ReturnType<typeof createSslNamespace>
 }
