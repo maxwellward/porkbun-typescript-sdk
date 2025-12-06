@@ -3,6 +3,7 @@ import { createDomainsNamespace, type DomainsNamespace } from "./endpoints/domai
 import { createPingMethod, type PingMethod } from "./endpoints/ping";
 import { createPricingMethod, PricingMethod } from "./endpoints/pricing";
 import { createSslNamespace, type SslNamespace } from "./endpoints/ssl";
+import { PorkbunAPIError, PorkbunHTTPError, PorkbunNetworkError, PorkbunResponseError } from "./errors";
 
 export interface PorkbunClientOptions {
 	apiKey: string;
@@ -60,32 +61,48 @@ export class PorkbunClient {
 	}
 
 	async request<T>(path: string, payload?: object): Promise<T> {
-		const body = JSON.stringify({
-			apikey: this.apiKey,
-			secretapikey: this.secretApiKey,
-			...payload
-		})
+		let response: Response;
 
-		const response = await fetch(`${this.baseUrl}${path}`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body
-		})
+		try {
+			const body = JSON.stringify({
+				apikey: this.apiKey,
+				secretapikey: this.secretApiKey,
+				...payload
+			})
+
+			response = await fetch(`${this.baseUrl}${path}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body
+			})
+		} catch (err) {
+			throw new PorkbunNetworkError("Network request failed", err as Error);
+		}
+
 
 		if (!response.ok) {
-			throw new Error(`Porkbun API error: HTTP ${response.status} ${response.statusText} ${(await response.text())}`)
+			throw new PorkbunHTTPError(
+				`HTTP ${response.status}`,
+				response.status,
+				response.statusText,
+				await response.text()
+			)
 		}
 
 		const json: unknown = await response.json();
 
 		if (!isPorkbunResponse(json)) {
-			throw new Error("Porkbun API error: Invalid response format");
+			throw new PorkbunResponseError("Invalid response format");
 		}
 
 		if (json.status !== "SUCCESS") {
-			throw new Error(`Porkbun API error: ${json.message ?? "Unknown error"}`);
+			throw new PorkbunAPIError(
+				json.message ?? "Unknown error",
+				json.status,
+				json.message
+			);
 		}
 
 		return json as T;

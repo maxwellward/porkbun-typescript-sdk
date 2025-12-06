@@ -5,3 +5,5 @@ export * from './types/pricing'
 export * from "./types/domains"
 export * from "./types/dns"
 export * from "./types/ssl"
+
+export * from "./errors"
