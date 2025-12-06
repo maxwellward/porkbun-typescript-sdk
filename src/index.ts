@@ -1,18 +1,16 @@
 export {
-	PorkbunClient,
-	PorkbunBaseResponse,
-	PorkbunClientOptions,
 	DnsNamespace,
 	DomainsNamespace,
 	PingMethod,
+	PorkbunBaseResponse,
+	PorkbunClient,
+	PorkbunClientOptions,
 	PricingMethod,
 	SslNamespace,
 } from "./client";
-
+export * from "./errors";
+export * from "./types/dns";
+export * from "./types/domains";
 export * from "./types/ping";
 export * from "./types/pricing";
-export * from "./types/domains";
-export * from "./types/dns";
 export * from "./types/ssl";
-
-export * from "./errors";
