@@ -25,6 +25,7 @@ import type {
 } from "../types/domains";
 import {
 	assertValid,
+	validateDomain,
 	validateForwardId,
 	validateForwardType,
 	validateIPs,
@@ -64,6 +65,8 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * client.domains.checkDomain({ domain: 'example.com' });
 		 */
 		checkDomain(payload: CheckDomainPayload): Promise<CheckDomainResponse> {
+			assertValid(validateDomain(payload.domain), "domain", payload.domain);
+
 			return client.request<CheckDomainResponse>(
 				`${BASE_PATH}/checkDomain/${payload.domain}`,
 			);
@@ -77,6 +80,8 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * client.domains.getNameservers({ domain: 'example.com' });
 		 */
 		getNameservers(payload: GetNsPayload): Promise<GetNsResponse> {
+			assertValid(validateDomain(payload.domain), "domain", payload.domain);
+
 			return client.request<GetNsResponse>(
 				`${BASE_PATH}/getNs/${payload.domain}`,
 			);
@@ -124,6 +129,8 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		getUrlForwarding(
 			payload: GetUrlForwardingPayload,
 		): Promise<GetUrlForwardingResponse> {
+			assertValid(validateDomain(payload.domain), "domain", payload.domain);
+
 			return client.request<GetUrlForwardingResponse>(
 				`${BASE_PATH}/getUrlForwarding/${payload.domain}`,
 			);
@@ -203,6 +210,8 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		getGlueRecords(
 			payload: GetGlueRecordsPayload,
 		): Promise<GetGlueRecordsResponse> {
+			assertValid(validateDomain(payload.domain), "domain", payload.domain);
+
 			return client.request<GetGlueRecordsResponse>(
 				`${BASE_PATH}/getGlue/${payload.domain}`,
 			);

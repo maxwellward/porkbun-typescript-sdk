@@ -3,6 +3,7 @@ import type {
 	RetrieveSslBundlePayload,
 	RetrieveSslBundleResponse,
 } from "../types/ssl";
+import { assertValid, validateDomain } from "../validation";
 
 export type SslNamespace = ReturnType<typeof createSslNamespace>;
 
@@ -20,6 +21,8 @@ export const createSslNamespace = (client: PorkbunClient) => {
 		getSslBundle(
 			payload: RetrieveSslBundlePayload,
 		): Promise<RetrieveSslBundleResponse> {
+			assertValid(validateDomain(payload.domain), "domain", payload.domain);
+
 			return client.request<RetrieveSslBundleResponse>(
 				`${BASE_PATH}/retrieve/${payload.domain}`,
 			);
