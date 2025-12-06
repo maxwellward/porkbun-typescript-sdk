@@ -9,5 +9,5 @@ export interface PricingResponse extends PorkbunBaseResponse {
 			transfer: string;
 			coupons: string[];
 		}
-	>[];
+	>;
 }
