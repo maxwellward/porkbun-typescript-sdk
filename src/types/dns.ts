@@ -13,17 +13,17 @@ export enum DNS_RECORD_TYPE {
 	CAA = "CAA",
 	HTTPS = "HTTPS",
 	SVCB = "SVCB",
-	SSHFP = "SSHFP"
+	SSHFP = "SSHFP",
 }
 
 export interface DnsRecord {
-	id: string,
-	name: string,
-	type: `${DNS_RECORD_TYPE}`,
-	content: string,
-	ttl: number,
-	prio: string,
-	notes: string,
+	id: string;
+	name: string;
+	type: `${DNS_RECORD_TYPE}`;
+	content: string;
+	ttl: number;
+	prio: string;
+	notes: string;
 }
 
 export interface DnssecRecord {
@@ -62,81 +62,84 @@ export interface RetrieveDnsRecordsBySubdomainPayload {
 	type: `${DNS_RECORD_TYPE}`;
 	subdomain: string;
 }
-export interface RetrieveDnsRecordsBySubdomainResponse extends PorkbunBaseResponse {
+export interface RetrieveDnsRecordsBySubdomainResponse
+	extends PorkbunBaseResponse {
 	records: DnsRecord[];
 }
 
 export interface CreateDnsRecordPayload {
-	domain: string,
-	name?: string,
-	type: `${DNS_RECORD_TYPE}`,
-	content: string,
-	ttl?: number,
-	prio?: string,
-	notes?: string,
+	domain: string;
+	name?: string;
+	type: `${DNS_RECORD_TYPE}`;
+	content: string;
+	ttl?: number;
+	prio?: string;
+	notes?: string;
 }
 export interface CreateDnsRecordResponse extends PorkbunBaseResponse {
 	id: string;
 }
 
 export interface EditDnsRecordByIdPayload {
-	domain: string,
-	record_id: string,
-	name?: string,
-	type: `${DNS_RECORD_TYPE}`,
-	content: string,
-	ttl?: number,
-	prio?: string,
-	notes?: string,
+	domain: string;
+	record_id: string;
+	name?: string;
+	type: `${DNS_RECORD_TYPE}`;
+	content: string;
+	ttl?: number;
+	prio?: string;
+	notes?: string;
 }
 export interface EditDnsRecordByIdResponse extends PorkbunBaseResponse {}
 
 export interface EditDnsRecordsBySubdomainPayload {
-	domain: string,
-	type: `${DNS_RECORD_TYPE}`,
-	subdomain: string,
-	content: string,
-	ttl?: number,
-	prio?: string,
-	notes?: string,
+	domain: string;
+	type: `${DNS_RECORD_TYPE}`;
+	subdomain: string;
+	content: string;
+	ttl?: number;
+	prio?: string;
+	notes?: string;
 }
-export interface EditDnsRecordsBySubdomainResponse extends PorkbunBaseResponse {}
+export interface EditDnsRecordsBySubdomainResponse
+	extends PorkbunBaseResponse {}
 
 export interface DeleteDnsRecordByIdPayload {
-	domain: string,
-	record_id: string,
+	domain: string;
+	record_id: string;
 }
 export interface DeleteDnsRecordByIdResponse extends PorkbunBaseResponse {}
 
 export interface DeleteDnsRecordsBySubdomainPayload {
-	domain: string,
-	type: `${DNS_RECORD_TYPE}`,
-	subdomain: string,
+	domain: string;
+	type: `${DNS_RECORD_TYPE}`;
+	subdomain: string;
 }
-export interface DeleteDnsRecordsBySubdomainResponse extends PorkbunBaseResponse {}
+export interface DeleteDnsRecordsBySubdomainResponse
+	extends PorkbunBaseResponse {}
 
 export interface CreateDnssecRecordPayload {
-	domain: string,
-	keyTag?: number,
-	alg?: number,
-	digestType?: number,
-	digest?: string,
-	maxSigLife?: string,
-	keyDataFlags?: string,
-	keyDataProtocol?: string,
-	keyDataAlgo?: string,
-	keyDataPubKey?: string,
+	domain: string;
+	keyTag?: number;
+	alg?: number;
+	digestType?: number;
+	digest?: string;
+	maxSigLife?: string;
+	keyDataFlags?: string;
+	keyDataProtocol?: string;
+	keyDataAlgo?: string;
+	keyDataPubKey?: string;
 }
 export interface CreateDnssecRecordResponse extends PorkbunBaseResponse {}
 
 export interface DeleteDnssecRecordPayload {
-	domain: string,
-	keyTag: number,
+	domain: string;
+	keyTag: number;
 }
 export interface DeleteDnssecRecordResponse extends PorkbunBaseResponse {}
 
 export interface GetDnssecRecordsPayload {
-	domain: string,
+	domain: string;
 }
 export interface GetDnssecRecordResponse extends PorkbunBaseResponse {
 	records: Record<string, DnssecRecord>;

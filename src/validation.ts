@@ -8,7 +8,11 @@ export type ValidationResult =
 /**
  * Throws a PorkbunValidationError if the validation result is invalid.
  */
-export function assertValid(result: ValidationResult, field: string, value?: unknown): void {
+export function assertValid(
+	result: ValidationResult,
+	field: string,
+	value?: unknown,
+): void {
 	if (!result.valid) {
 		throw new PorkbunValidationError(result.reason, field, value);
 	}
@@ -25,7 +29,8 @@ export const validateDomain = (domain: string): ValidationResult => {
 	}
 
 	// Basic domain pattern (allows subdomains)
-	const domainRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+	const domainRegex =
+		/^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
 	if (!domainRegex.test(domain)) {
 		return { valid: false, reason: "Invalid domain format" };
 	}
@@ -47,7 +52,8 @@ export const validateSubdomain = (subdomain: string): ValidationResult => {
 	}
 
 	// Subdomain pattern: alphanumeric, hyphens, can have dots for nested subdomains
-	const subdomainRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*$/;
+	const subdomainRegex =
+		/^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*$/;
 	if (!subdomainRegex.test(subdomain)) {
 		return { valid: false, reason: "Invalid subdomain format" };
 	}
@@ -79,7 +85,10 @@ export const validatePriority = (prio: string): ValidationResult => {
 		return { valid: false, reason: "Priority must be a numeric string" };
 	}
 	if (!Number.isInteger(num) || num < 0 || num > 65535) {
-		return { valid: false, reason: "Priority must be an integer between 0 and 65535" };
+		return {
+			valid: false,
+			reason: "Priority must be an integer between 0 and 65535",
+		};
 	}
 	return { valid: true };
 };
@@ -106,7 +115,7 @@ export const validateIPv4 = (ip: string): ValidationResult => {
 		return { valid: false, reason: "Invalid IPv4 format" };
 	}
 	const octets = match.slice(1).map(Number);
-	if (octets.some(o => o > 255)) {
+	if (octets.some((o) => o > 255)) {
 		return { valid: false, reason: "IPv4 octets must be between 0 and 255" };
 	}
 	return { valid: true };
@@ -118,7 +127,8 @@ export const validateIPv4 = (ip: string): ValidationResult => {
  */
 export const validateIPv6 = (ip: string): ValidationResult => {
 	// Comprehensive IPv6 regex supporting full, compressed, and mixed formats
-	const ipv6Regex = /^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]+|::(ffff(:0{1,4})?:)?((25[0-5]|(2[0-4]|1?[0-9])?[0-9])\.){3}(25[0-5]|(2[0-4]|1?[0-9])?[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1?[0-9])?[0-9])\.){3}(25[0-5]|(2[0-4]|1?[0-9])?[0-9]))$/;
+	const ipv6Regex =
+		/^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]+|::(ffff(:0{1,4})?:)?((25[0-5]|(2[0-4]|1?[0-9])?[0-9])\.){3}(25[0-5]|(2[0-4]|1?[0-9])?[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1?[0-9])?[0-9])\.){3}(25[0-5]|(2[0-4]|1?[0-9])?[0-9]))$/;
 	if (!ipv6Regex.test(ip)) {
 		return { valid: false, reason: "Invalid IPv6 format" };
 	}
@@ -135,7 +145,10 @@ export const validateIP = (ip: string): ValidationResult => {
 	const ipv6Result = validateIPv6(ip);
 	if (ipv6Result.valid) return ipv6Result;
 
-	return { valid: false, reason: "Invalid IP address format (must be valid IPv4 or IPv6)" };
+	return {
+		valid: false,
+		reason: "Invalid IP address format (must be valid IPv4 or IPv6)",
+	};
 };
 
 /**
@@ -163,9 +176,12 @@ export const validateHostname = (hostname: string): ValidationResult => {
 	}
 
 	// Allow trailing dot for FQDN
-	const normalizedHostname = hostname.endsWith('.') ? hostname.slice(0, -1) : hostname;
+	const normalizedHostname = hostname.endsWith(".")
+		? hostname.slice(0, -1)
+		: hostname;
 
-	const hostnameRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*$/;
+	const hostnameRegex =
+		/^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*$/;
 	if (!hostnameRegex.test(normalizedHostname)) {
 		return { valid: false, reason: "Invalid hostname format" };
 	}
@@ -187,7 +203,10 @@ export const validateForwardId = (forwardId: string): ValidationResult => {
  */
 export const validateForwardType = (type: string): ValidationResult => {
 	if (type !== "temporary" && type !== "permanent") {
-		return { valid: false, reason: "Forward type must be 'temporary' or 'permanent'" };
+		return {
+			valid: false,
+			reason: "Forward type must be 'temporary' or 'permanent'",
+		};
 	}
 	return { valid: true };
 };
@@ -205,7 +224,10 @@ export const validateYesNo = (value: string): ValidationResult => {
 /**
  * Validates DNS record content based on record type.
  */
-export const validateDnsContent = (type: `${DNS_RECORD_TYPE}`, content: string): ValidationResult => {
+export const validateDnsContent = (
+	type: `${DNS_RECORD_TYPE}`,
+	content: string,
+): ValidationResult => {
 	if (!content || content.length === 0) {
 		return { valid: false, reason: "Content cannot be empty" };
 	}
@@ -226,13 +248,22 @@ export const validateDnsContent = (type: `${DNS_RECORD_TYPE}`, content: string):
 		case DNS_RECORD_TYPE.SRV:
 			// SRV format: priority weight port target (we validate loosely)
 			if (!/^\d+\s+\d+\s+\d+\s+\S+$/.test(content)) {
-				return { valid: false, reason: "SRV record must be in format: priority weight port target" };
+				return {
+					valid: false,
+					reason: "SRV record must be in format: priority weight port target",
+				};
 			}
 			return { valid: true };
 		case DNS_RECORD_TYPE.CAA:
 			// CAA format: flag tag value
-			if (!/^\d+\s+\S+\s+".+"$/.test(content) && !/^\d+\s+\S+\s+\S+$/.test(content)) {
-				return { valid: false, reason: "CAA record must be in format: flag tag value" };
+			if (
+				!/^\d+\s+\S+\s+".+"$/.test(content) &&
+				!/^\d+\s+\S+\s+\S+$/.test(content)
+			) {
+				return {
+					valid: false,
+					reason: "CAA record must be in format: flag tag value",
+				};
 			}
 			return { valid: true };
 		default:
@@ -252,7 +283,10 @@ export const validateNameservers = (ns: string[]): ValidationResult => {
 	for (let i = 0; i < ns.length; i++) {
 		const result = validateHostname(ns[i]);
 		if (!result.valid) {
-			return { valid: false, reason: `Nameserver at index ${i}: ${result.reason}` };
+			return {
+				valid: false,
+				reason: `Nameserver at index ${i}: ${result.reason}`,
+			};
 		}
 	}
 

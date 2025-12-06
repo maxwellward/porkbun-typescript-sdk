@@ -1,11 +1,43 @@
 import type { PorkbunClient } from "../client";
-import type { CreateDnsRecordPayload, CreateDnsRecordResponse, CreateDnssecRecordPayload, CreateDnssecRecordResponse, DeleteDnsRecordByIdPayload, DeleteDnsRecordByIdResponse, DeleteDnsRecordsBySubdomainPayload, DeleteDnsRecordsBySubdomainResponse, DeleteDnssecRecordPayload, DeleteDnssecRecordResponse, EditDnsRecordByIdPayload, EditDnsRecordByIdResponse, EditDnsRecordsBySubdomainPayload, EditDnsRecordsBySubdomainResponse, GetDnssecRecordResponse, GetDnssecRecordsPayload, RetrieveDnsRecordPayload, RetrieveDnsRecordResponse, RetrieveDnsRecordsBySubdomainPayload, RetrieveDnsRecordsBySubdomainResponse, RetrieveDnsRecordsByTypePayload, RetrieveDnsRecordsByTypeResponse, RetrieveDnsRecordsPayload, RetrieveDnsRecordsResponse } from "../types/dns";
-import { assertValid, validateDnsContent, validatePriority, validateRecordId, validateSubdomain, validateTTL } from "../validation";
+import type {
+	CreateDnsRecordPayload,
+	CreateDnsRecordResponse,
+	CreateDnssecRecordPayload,
+	CreateDnssecRecordResponse,
+	DeleteDnsRecordByIdPayload,
+	DeleteDnsRecordByIdResponse,
+	DeleteDnsRecordsBySubdomainPayload,
+	DeleteDnsRecordsBySubdomainResponse,
+	DeleteDnssecRecordPayload,
+	DeleteDnssecRecordResponse,
+	EditDnsRecordByIdPayload,
+	EditDnsRecordByIdResponse,
+	EditDnsRecordsBySubdomainPayload,
+	EditDnsRecordsBySubdomainResponse,
+	GetDnssecRecordResponse,
+	GetDnssecRecordsPayload,
+	RetrieveDnsRecordPayload,
+	RetrieveDnsRecordResponse,
+	RetrieveDnsRecordsBySubdomainPayload,
+	RetrieveDnsRecordsBySubdomainResponse,
+	RetrieveDnsRecordsByTypePayload,
+	RetrieveDnsRecordsByTypeResponse,
+	RetrieveDnsRecordsPayload,
+	RetrieveDnsRecordsResponse,
+} from "../types/dns";
+import {
+	assertValid,
+	validateDnsContent,
+	validatePriority,
+	validateRecordId,
+	validateSubdomain,
+	validateTTL,
+} from "../validation";
 
 export type DnsNamespace = ReturnType<typeof createDnsNamespace>;
 
 export const createDnsNamespace = (client: PorkbunClient) => {
-	const BASE_PATH = '/dns'
+	const BASE_PATH = "/dns";
 
 	return {
 		/**
@@ -18,8 +50,12 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * @example
 		 * client.dns.getDnsRecords({ domain: 'example.com', type: 'CNAME' });
 		 */
-		async getDnsRecords(payload: RetrieveDnsRecordsPayload): Promise<RetrieveDnsRecordsResponse> {
-			const response = await client.request<RetrieveDnsRecordsResponse>(`${BASE_PATH}/retrieve/${payload.domain}`)
+		async getDnsRecords(
+			payload: RetrieveDnsRecordsPayload,
+		): Promise<RetrieveDnsRecordsResponse> {
+			const response = await client.request<RetrieveDnsRecordsResponse>(
+				`${BASE_PATH}/retrieve/${payload.domain}`,
+			);
 			let { records, ...rest } = response;
 
 			if (payload.type) {
@@ -40,10 +76,18 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * @example
 		 * client.dns.getDnsRecord({ domain: 'example.com', record_id: '106926652' });
 		 */
-		async getDnsRecord(payload: RetrieveDnsRecordPayload): Promise<RetrieveDnsRecordResponse> {
-			assertValid(validateRecordId(payload.record_id), 'record_id', payload.record_id);
+		async getDnsRecord(
+			payload: RetrieveDnsRecordPayload,
+		): Promise<RetrieveDnsRecordResponse> {
+			assertValid(
+				validateRecordId(payload.record_id),
+				"record_id",
+				payload.record_id,
+			);
 
-			const response = await client.request<RetrieveDnsRecordsResponse>(`${BASE_PATH}/retrieve/${payload.domain}/${payload.record_id}`)
+			const response = await client.request<RetrieveDnsRecordsResponse>(
+				`${BASE_PATH}/retrieve/${payload.domain}/${payload.record_id}`,
+			);
 			const { records, ...rest } = response;
 			return {
 				...rest,
@@ -63,8 +107,12 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * // Get all A records at the root domain
 		 * client.dns.getRootDnsRecords({ domain: 'example.com', type: 'A' });
 		 */
-		getRootDnsRecords(payload: RetrieveDnsRecordsByTypePayload): Promise<RetrieveDnsRecordsByTypeResponse> {
-			return client.request<RetrieveDnsRecordsByTypeResponse>(`${BASE_PATH}/retrieveByNameType/${payload.domain}/${payload.type}`)
+		getRootDnsRecords(
+			payload: RetrieveDnsRecordsByTypePayload,
+		): Promise<RetrieveDnsRecordsByTypeResponse> {
+			return client.request<RetrieveDnsRecordsByTypeResponse>(
+				`${BASE_PATH}/retrieveByNameType/${payload.domain}/${payload.type}`,
+			);
 		},
 
 		/**
@@ -77,10 +125,18 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * // Get all CNAME records at the 'www' subdomain
 		 * client.dns.getSubdomainDnsRecords({ domain: 'example.com', type: 'CNAME', subdomain: 'www' });
 		 */
-		getSubdomainDnsRecords(payload: RetrieveDnsRecordsBySubdomainPayload): Promise<RetrieveDnsRecordsBySubdomainResponse> {
-			assertValid(validateSubdomain(payload.subdomain), 'subdomain', payload.subdomain);
+		getSubdomainDnsRecords(
+			payload: RetrieveDnsRecordsBySubdomainPayload,
+		): Promise<RetrieveDnsRecordsBySubdomainResponse> {
+			assertValid(
+				validateSubdomain(payload.subdomain),
+				"subdomain",
+				payload.subdomain,
+			);
 
-			return client.request<RetrieveDnsRecordsBySubdomainResponse>(`${BASE_PATH}/retrieveByNameType/${payload.domain}/${payload.type}/${payload.subdomain}`)
+			return client.request<RetrieveDnsRecordsBySubdomainResponse>(
+				`${BASE_PATH}/retrieveByNameType/${payload.domain}/${payload.type}/${payload.subdomain}`,
+			);
 		},
 
 		/**
@@ -96,20 +152,29 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * @example
 		 * client.dns.createDnsRecord({ domain: 'example.com', name: 'www', type: 'A', content: '1.1.1.1', ttl: 600 });
 		 */
-		createDnsRecord(payload: CreateDnsRecordPayload): Promise<CreateDnsRecordResponse> {
-			assertValid(validateDnsContent(payload.type, payload.content), 'content', payload.content);
+		createDnsRecord(
+			payload: CreateDnsRecordPayload,
+		): Promise<CreateDnsRecordResponse> {
+			assertValid(
+				validateDnsContent(payload.type, payload.content),
+				"content",
+				payload.content,
+			);
 			if (payload.name !== undefined) {
-				assertValid(validateSubdomain(payload.name), 'name', payload.name);
+				assertValid(validateSubdomain(payload.name), "name", payload.name);
 			}
 			if (payload.ttl !== undefined) {
-				assertValid(validateTTL(payload.ttl), 'ttl', payload.ttl);
+				assertValid(validateTTL(payload.ttl), "ttl", payload.ttl);
 			}
 			if (payload.prio !== undefined) {
-				assertValid(validatePriority(payload.prio), 'prio', payload.prio);
+				assertValid(validatePriority(payload.prio), "prio", payload.prio);
 			}
 
 			const { domain, ...body } = payload;
-			return client.request<CreateDnsRecordResponse>(`${BASE_PATH}/create/${domain}`, body)
+			return client.request<CreateDnsRecordResponse>(
+				`${BASE_PATH}/create/${domain}`,
+				body,
+			);
 		},
 
 		/**
@@ -126,21 +191,34 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * @example
 		 * client.dns.editDnsRecordById({ domain: 'example.com', record_id: '106926659', name: 'www', type: 'A', content: '1.1.1.1', ttl: 600 });
 		 */
-		editDnsRecordById(payload: EditDnsRecordByIdPayload): Promise<EditDnsRecordByIdResponse> {
-			assertValid(validateRecordId(payload.record_id), 'record_id', payload.record_id);
-			assertValid(validateDnsContent(payload.type, payload.content), 'content', payload.content);
+		editDnsRecordById(
+			payload: EditDnsRecordByIdPayload,
+		): Promise<EditDnsRecordByIdResponse> {
+			assertValid(
+				validateRecordId(payload.record_id),
+				"record_id",
+				payload.record_id,
+			);
+			assertValid(
+				validateDnsContent(payload.type, payload.content),
+				"content",
+				payload.content,
+			);
 			if (payload.name !== undefined) {
-				assertValid(validateSubdomain(payload.name), 'name', payload.name);
+				assertValid(validateSubdomain(payload.name), "name", payload.name);
 			}
 			if (payload.ttl !== undefined) {
-				assertValid(validateTTL(payload.ttl), 'ttl', payload.ttl);
+				assertValid(validateTTL(payload.ttl), "ttl", payload.ttl);
 			}
 			if (payload.prio !== undefined) {
-				assertValid(validatePriority(payload.prio), 'prio', payload.prio);
+				assertValid(validatePriority(payload.prio), "prio", payload.prio);
 			}
 
 			const { domain, record_id, ...body } = payload;
-			return client.request<EditDnsRecordByIdResponse>(`${BASE_PATH}/edit/${domain}/${record_id}`, body)
+			return client.request<EditDnsRecordByIdResponse>(
+				`${BASE_PATH}/edit/${domain}/${record_id}`,
+				body,
+			);
 		},
 
 		/**
@@ -156,18 +234,31 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * @example
 		 * client.dns.editDnsRecordsBySubdomain({ domain: 'example.com', type: 'A', subdomain: 'hello', content: '1.1.1.1', ttl: 600 });
 		 */
-		editDnsRecordsBySubdomain(payload: EditDnsRecordsBySubdomainPayload): Promise<EditDnsRecordsBySubdomainResponse> {
-			assertValid(validateSubdomain(payload.subdomain), 'subdomain', payload.subdomain);
-			assertValid(validateDnsContent(payload.type, payload.content), 'content', payload.content);
+		editDnsRecordsBySubdomain(
+			payload: EditDnsRecordsBySubdomainPayload,
+		): Promise<EditDnsRecordsBySubdomainResponse> {
+			assertValid(
+				validateSubdomain(payload.subdomain),
+				"subdomain",
+				payload.subdomain,
+			);
+			assertValid(
+				validateDnsContent(payload.type, payload.content),
+				"content",
+				payload.content,
+			);
 			if (payload.ttl !== undefined) {
-				assertValid(validateTTL(payload.ttl), 'ttl', payload.ttl);
+				assertValid(validateTTL(payload.ttl), "ttl", payload.ttl);
 			}
 			if (payload.prio !== undefined) {
-				assertValid(validatePriority(payload.prio), 'prio', payload.prio);
+				assertValid(validatePriority(payload.prio), "prio", payload.prio);
 			}
 
 			const { domain, type, subdomain, ...body } = payload;
-			return client.request<EditDnsRecordsBySubdomainResponse>(`${BASE_PATH}/editByNameType/${domain}/${type}/${subdomain}`, body)
+			return client.request<EditDnsRecordsBySubdomainResponse>(
+				`${BASE_PATH}/editByNameType/${domain}/${type}/${subdomain}`,
+				body,
+			);
 		},
 
 		/**
@@ -178,10 +269,18 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * @example
 		 * client.dns.deleteDnsRecordById({ domain: 'example.com', record_id: '106926659' });
 		 */
-		deleteDnsRecordById(payload: DeleteDnsRecordByIdPayload): Promise<DeleteDnsRecordByIdResponse> {
-			assertValid(validateRecordId(payload.record_id), 'record_id', payload.record_id);
+		deleteDnsRecordById(
+			payload: DeleteDnsRecordByIdPayload,
+		): Promise<DeleteDnsRecordByIdResponse> {
+			assertValid(
+				validateRecordId(payload.record_id),
+				"record_id",
+				payload.record_id,
+			);
 
-			return client.request<DeleteDnsRecordByIdResponse>(`${BASE_PATH}/delete/${payload.domain}/${payload.record_id}`)
+			return client.request<DeleteDnsRecordByIdResponse>(
+				`${BASE_PATH}/delete/${payload.domain}/${payload.record_id}`,
+			);
 		},
 
 		/**
@@ -193,10 +292,18 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * @example
 		 * client.dns.deleteDnsRecordsBySubdomain({ domain: 'example.com', type: 'A', subdomain: 'hello' });
 		 */
-		deleteDnsRecordsBySubdomain(payload: DeleteDnsRecordsBySubdomainPayload): Promise<DeleteDnsRecordsBySubdomainResponse> {
-			assertValid(validateSubdomain(payload.subdomain), 'subdomain', payload.subdomain);
+		deleteDnsRecordsBySubdomain(
+			payload: DeleteDnsRecordsBySubdomainPayload,
+		): Promise<DeleteDnsRecordsBySubdomainResponse> {
+			assertValid(
+				validateSubdomain(payload.subdomain),
+				"subdomain",
+				payload.subdomain,
+			);
 
-			return client.request<DeleteDnsRecordsBySubdomainResponse>(`${BASE_PATH}/deleteByNameType/${payload.domain}/${payload.type}/${payload.subdomain}`)
+			return client.request<DeleteDnsRecordsBySubdomainResponse>(
+				`${BASE_PATH}/deleteByNameType/${payload.domain}/${payload.type}/${payload.subdomain}`,
+			);
 		},
 
 		/**
@@ -216,9 +323,14 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * @example
 		 * client.dns.createDnssecRecord({ domain: 'example.com', keyTag: 12345, alg: 13, digestType: 2, digest: 'abc123...' });
 		 */
-		createDnssecRecord(payload: CreateDnssecRecordPayload): Promise<CreateDnssecRecordResponse> {
+		createDnssecRecord(
+			payload: CreateDnssecRecordPayload,
+		): Promise<CreateDnssecRecordResponse> {
 			const { domain, ...body } = payload;
-			return client.request<CreateDnssecRecordResponse>(`${BASE_PATH}/createDnssecRecord/${domain}`, body)
+			return client.request<CreateDnssecRecordResponse>(
+				`${BASE_PATH}/createDnssecRecord/${domain}`,
+				body,
+			);
 		},
 
 		/**
@@ -230,8 +342,12 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * @example
 		 * client.dns.deleteDnssecRecord({ domain: 'example.com', keyTag: 12345 });
 		 */
-		deleteDnssecRecord(payload: DeleteDnssecRecordPayload): Promise<DeleteDnssecRecordResponse> {
-			return client.request<DeleteDnssecRecordResponse>(`${BASE_PATH}/deleteDnssecRecord/${payload.domain}/${payload.keyTag}`)
+		deleteDnssecRecord(
+			payload: DeleteDnssecRecordPayload,
+		): Promise<DeleteDnssecRecordResponse> {
+			return client.request<DeleteDnssecRecordResponse>(
+				`${BASE_PATH}/deleteDnssecRecord/${payload.domain}/${payload.keyTag}`,
+			);
 		},
 
 		/**
@@ -242,8 +358,12 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		 * @example
 		 * client.dns.getDnssecRecords({ domain: 'example.com' });
 		 */
-		getDnssecRecords(payload: GetDnssecRecordsPayload): Promise<GetDnssecRecordResponse> {
-			return client.request<GetDnssecRecordResponse>(`${BASE_PATH}/getDnssecRecords/${payload.domain}`)
+		getDnssecRecords(
+			payload: GetDnssecRecordsPayload,
+		): Promise<GetDnssecRecordResponse> {
+			return client.request<GetDnssecRecordResponse>(
+				`${BASE_PATH}/getDnssecRecords/${payload.domain}`,
+			);
 		},
-	}
-}
+	};
+};

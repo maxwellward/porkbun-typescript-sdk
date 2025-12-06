@@ -1,9 +1,17 @@
 import { createDnsNamespace, type DnsNamespace } from "./endpoints/dns";
-import { createDomainsNamespace, type DomainsNamespace } from "./endpoints/domains";
+import {
+	createDomainsNamespace,
+	type DomainsNamespace,
+} from "./endpoints/domains";
 import { createPingMethod, type PingMethod } from "./endpoints/ping";
 import { createPricingMethod, PricingMethod } from "./endpoints/pricing";
 import { createSslNamespace, type SslNamespace } from "./endpoints/ssl";
-import { PorkbunAPIError, PorkbunHTTPError, PorkbunNetworkError, PorkbunResponseError } from "./errors";
+import {
+	PorkbunAPIError,
+	PorkbunHTTPError,
+	PorkbunNetworkError,
+	PorkbunResponseError,
+} from "./errors";
 import { assertValid, validateDomain } from "./validation";
 
 export interface PorkbunClientOptions {
@@ -51,7 +59,9 @@ export class PorkbunClient {
 	constructor(options: PorkbunClientOptions) {
 		this.apiKey = options.apiKey;
 		this.secretApiKey = options.secretApiKey;
-		this.baseUrl = options.baseUrl?.replace(/\/+$/, "") ?? 'https://api.porkbun.com/api/json/v3'
+		this.baseUrl =
+			options.baseUrl?.replace(/\/+$/, "") ??
+			"https://api.porkbun.com/api/json/v3";
 
 		// Endpoint namespaces
 		this.ping = createPingMethod(this);
@@ -65,37 +75,36 @@ export class PorkbunClient {
 		let response: Response;
 
 		// Domain is common enough in most payloads that we can save some boilerplate by checking it here
-		if (payload && typeof payload === 'object' && 'domain' in payload) {
+		if (payload && typeof payload === "object" && "domain" in payload) {
 			const domain = (payload as { domain: string }).domain;
-			assertValid(validateDomain(domain), 'domain', domain);
+			assertValid(validateDomain(domain), "domain", domain);
 		}
 
 		try {
 			const body = JSON.stringify({
 				apikey: this.apiKey,
 				secretapikey: this.secretApiKey,
-				...payload
-			})
+				...payload,
+			});
 
 			response = await fetch(`${this.baseUrl}${path}`, {
 				method: "POST",
 				headers: {
-					"Content-Type": "application/json"
+					"Content-Type": "application/json",
 				},
-				body
-			})
+				body,
+			});
 		} catch (err) {
 			throw new PorkbunNetworkError("Network request failed", err as Error);
 		}
-
 
 		if (!response.ok) {
 			throw new PorkbunHTTPError(
 				`HTTP ${response.status}`,
 				response.status,
 				response.statusText,
-				await response.text()
-			)
+				await response.text(),
+			);
 		}
 
 		const json: unknown = await response.json();
@@ -108,18 +117,24 @@ export class PorkbunClient {
 			throw new PorkbunAPIError(
 				json.message ?? "Unknown error",
 				json.status,
-				json.message
+				json.message,
 			);
 		}
 
 		return json as T;
 	}
 
-	ping: PingMethod
-	getDefaultPricing: PricingMethod
-	domains: DomainsNamespace
-	dns: DnsNamespace
-	ssl: SslNamespace
+	ping: PingMethod;
+	getDefaultPricing: PricingMethod;
+	domains: DomainsNamespace;
+	dns: DnsNamespace;
+	ssl: SslNamespace;
 }
 
-export type { PingMethod, PricingMethod, DomainsNamespace, DnsNamespace, SslNamespace };
+export type {
+	PingMethod,
+	PricingMethod,
+	DomainsNamespace,
+	DnsNamespace,
+	SslNamespace,
+};

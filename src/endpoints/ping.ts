@@ -11,6 +11,6 @@ export const createPingMethod = (client: PorkbunClient) => {
 	 * client.ping();
 	 */
 	return function ping(): Promise<PingResponse> {
-		return client.request<PingResponse>("/ping")
-	}
-}
+		return client.request<PingResponse>("/ping");
+	};
+};

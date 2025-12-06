@@ -31,68 +31,68 @@ export interface CheckDomainPayload {
 	domain: string;
 }
 export interface CheckDomainResponse extends PorkbunBaseResponse {
-	avail: 'yes' | 'no',
-	type: string,
-	price: string,
-	firstYearPromo: string,
-	regularPrice: string,
-	premium: string,
+	avail: "yes" | "no";
+	type: string;
+	price: string;
+	firstYearPromo: string;
+	regularPrice: string;
+	premium: string;
 	additional: {
 		renewal: {
-			type: string,
-			price: string,
-			regularPrice: string
-		},
+			type: string;
+			price: string;
+			regularPrice: string;
+		};
 		transfer: {
-			type: string,
-			price: string,
-			regularPrice: string
-		}
-	}
+			type: string;
+			price: string;
+			regularPrice: string;
+		};
+	};
 }
 
 export interface GetNsPayload {
 	domain: string;
 }
 export interface GetNsResponse extends PorkbunBaseResponse {
-	ns: string[]
+	ns: string[];
 }
 
 export interface UpdateNsPayload {
 	domain: string;
-	ns: string[]
+	ns: string[];
 }
-export interface UpdateNsResponse extends PorkbunBaseResponse { }
+export interface UpdateNsResponse extends PorkbunBaseResponse {}
 
 export interface GetUrlForwardingPayload {
 	domain: string;
 }
 export interface GetUrlForwardingResponse extends PorkbunBaseResponse {
 	forwards: {
-		id: string,
-		subdomain: string,
-		location: string,
-		type: 'temporary' | 'permanent',
-		includePath: 'yes' | 'no',
-		wildcard: 'yes' | 'no',
-	}[]
+		id: string;
+		subdomain: string;
+		location: string;
+		type: "temporary" | "permanent";
+		includePath: "yes" | "no";
+		wildcard: "yes" | "no";
+	}[];
 }
 
 export interface AddUrlForwardPayload {
 	domain: string;
 	subdomain?: string;
 	location: string;
-	type: 'temporary' | 'permanent';
-	includePath: 'yes' | 'no';
-	wildcard: 'yes' | 'no';
+	type: "temporary" | "permanent";
+	includePath: "yes" | "no";
+	wildcard: "yes" | "no";
 }
-export interface AddUrlForwardResponse extends PorkbunBaseResponse { }
+export interface AddUrlForwardResponse extends PorkbunBaseResponse {}
 
 export interface DeleteUrlForwardPayload {
 	domain: string;
 	forward_id: string;
 }
-export interface DeleteUrlForwardResponse extends PorkbunBaseResponse { }
+export interface DeleteUrlForwardResponse extends PorkbunBaseResponse {}
 
 export interface GetGlueRecordsPayload {
 	domain: string;
@@ -111,17 +111,17 @@ export interface CreateGluePayload {
 	glue_host_subdomain: string;
 	ips: string[];
 }
-export interface CreateGlueResponse extends PorkbunBaseResponse { }
+export interface CreateGlueResponse extends PorkbunBaseResponse {}
 
 export interface UpdateGluePayload {
 	domain: string;
 	glue_host_subdomain: string;
 	ips: string[];
 }
-export interface UpdateGlueResponse extends PorkbunBaseResponse { }
+export interface UpdateGlueResponse extends PorkbunBaseResponse {}
 
 export interface DeleteGluePayload {
 	domain: string;
 	glue_host_subdomain: string;
 }
-export interface DeleteGlueResponse extends PorkbunBaseResponse { }
+export interface DeleteGlueResponse extends PorkbunBaseResponse {}
