@@ -1,11 +1,31 @@
 {
   "name": "porkbun-typescript-sdk",
+  "version": "1.0.0",
+  "description": "A type-safe TypeScript SDK for the Porkbun API",
   "author": {
     "name": "Maxwell Ward",
     "url": "https://maxward.ca"
   },
-  "version": "1.0.0",
   "license": "MIT",
+  "keywords": [
+    "porkbun",
+    "api",
+    "sdk",
+    "dns",
+    "domain",
+    "domains",
+    "registrar",
+    "typescript",
+    "ssl"
+  ],
+  "homepage": "https://github.com/maxwellward/porkbun-typescript-sdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxwellward/porkbun-typescript-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maxwellward/porkbun-typescript-sdk/issues"
+  },
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,12 +35,17 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
-  "devDependencies": {
-    "@types/bun": "latest",
-    "typescript": "^5"
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
   },
   "scripts": {
     "build": "tsc && bun build src/index.ts --outfile dist/index.js --format esm"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
   }
 }
