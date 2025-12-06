@@ -49,7 +49,7 @@ export class PorkbunClient {
 	constructor(options: PorkbunClientOptions) {
 		this.apiKey = options.apiKey;
 		this.secretApiKey = options.secretApiKey;
-		this.baseUrl = options.baseUrl ?? 'https://api.porkbun.com/api/json/v3'
+		this.baseUrl = options.baseUrl?.replace(/\/+$/, "") ?? 'https://api.porkbun.com/api/json/v3'
 
 		// Endpoint namespaces
 		this.ping = createPingMethod(this);
