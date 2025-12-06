@@ -81,7 +81,7 @@ export const validateTTL = (ttl: number): ValidationResult => {
  */
 export const validatePriority = (prio: string): ValidationResult => {
 	const num = parseInt(prio, 10);
-	if (isNaN(num)) {
+	if (Number.isNaN(num)) {
 		return { valid: false, reason: "Priority must be a numeric string" };
 	}
 	if (!Number.isInteger(num) || num < 0 || num > 65535) {

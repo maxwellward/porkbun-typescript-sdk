@@ -4,7 +4,7 @@ import {
 	type DomainsNamespace,
 } from "./endpoints/domains";
 import { createPingMethod, type PingMethod } from "./endpoints/ping";
-import { createPricingMethod, PricingMethod } from "./endpoints/pricing";
+import { createPricingMethod, type PricingMethod } from "./endpoints/pricing";
 import { createSslNamespace, type SslNamespace } from "./endpoints/ssl";
 import {
 	PorkbunAPIError,
