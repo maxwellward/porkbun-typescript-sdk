@@ -21,7 +21,7 @@ export interface DnsRecord {
 	name: string,
 	type: `${DNS_RECORD_TYPE}`,
 	content: string,
-	ttl: string,
+	ttl: number,
 	prio: string,
 	notes: string,
 }

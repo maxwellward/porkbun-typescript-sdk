@@ -10,6 +10,16 @@ export interface PorkbunClientOptions {
 	baseUrl?: string;
 }
 
+/** Type guard to check if a value is a valid Porkbun API response */
+function isPorkbunResponse(value: unknown): value is PorkbunBaseResponse {
+	return (
+		typeof value === "object" &&
+		value !== null &&
+		"status" in value &&
+		typeof (value as PorkbunBaseResponse).status === "string"
+	);
+}
+
 /**
  * Base response structure returned by all Porkbun API endpoints.
  */
@@ -69,14 +79,16 @@ export class PorkbunClient {
 		}
 
 		const json: unknown = await response.json();
-		const data = json as T;
 
-		if ((data as any).status !== "SUCCESS") {
-			const msg = (data as any).message ?? "Unknown error";
-			throw new Error(`Porkbun API error: ${msg}`);
+		if (!isPorkbunResponse(json)) {
+			throw new Error("Porkbun API error: Invalid response format");
 		}
 
-		return data;
+		if (json.status !== "SUCCESS") {
+			throw new Error(`Porkbun API error: ${json.message ?? "Unknown error"}`);
+		}
+
+		return json as T;
 	}
 
 	ping: PingMethod
