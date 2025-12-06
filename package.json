@@ -42,7 +42,9 @@
 		"node": ">=18.0.0"
 	},
 	"scripts": {
-		"build": "tsc && bun build src/index.ts --outfile dist/index.js --format esm"
+		"build": "tsc && bun build src/index.ts --outfile dist/index.js --format esm",
+		"check": "bunx biome check",
+		"check:fix": "bunx biome check --write"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.8",
