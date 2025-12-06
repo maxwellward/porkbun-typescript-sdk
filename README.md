@@ -68,7 +68,7 @@ If you need to change the base URL (defaults to `https://api.porkbun.com/api/jso
 
 ## Namespaces
 
-The SDK is broken up into 3 namespaces: `domains`, `dns`, and `ssl`, along with a standalone `ping()` method for testing authentication and connectivity.
+The SDK is broken up into 3 namespaces: `domains`, `dns`, and `ssl`, along with standalone `ping()` and `getDefaultPricing()` methods.
 
 Parameters, return types, and examples are documented within the SDK using JSDoc. Hover over any method in your IDE to reveal it.
 

@@ -1,6 +1,7 @@
 import { createDnsNamespace, type DnsNamespace } from "./endpoints/dns";
 import { createDomainsNamespace, type DomainsNamespace } from "./endpoints/domains";
 import { createPingMethod, type PingMethod } from "./endpoints/ping";
+import { createPricingMethod, PricingMethod } from "./endpoints/pricing";
 import { createSslNamespace, type SslNamespace } from "./endpoints/ssl";
 
 export interface PorkbunClientOptions {
@@ -42,6 +43,7 @@ export class PorkbunClient {
 
 		// Endpoint namespaces
 		this.ping = createPingMethod(this);
+		this.getDefaultPricing = createPricingMethod(this);
 		this.domains = createDomainsNamespace(this);
 		this.dns = createDnsNamespace(this);
 		this.ssl = createSslNamespace(this);
@@ -78,9 +80,10 @@ export class PorkbunClient {
 	}
 
 	ping: PingMethod
+	getDefaultPricing: PricingMethod
 	domains: DomainsNamespace
 	dns: DnsNamespace
 	ssl: SslNamespace
 }
 
-export type { DnsNamespace, DomainsNamespace, PingMethod, SslNamespace };
+export type { PingMethod, PricingMethod, DomainsNamespace, DnsNamespace, SslNamespace };
