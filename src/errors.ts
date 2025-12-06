@@ -48,3 +48,15 @@ export class PorkbunResponseError extends PorkbunError {
         this.name = "PorkbunResponseError";
     }
 }
+
+// Validation failed
+export class PorkbunValidationError extends PorkbunError {
+    constructor(
+		message: string,
+		public readonly field: string,
+		public readonly value?: unknown,
+	) {
+        super(`Validation failed for '${field}': ${message}`);
+        this.name = "PorkbunValidationError";
+    }
+}

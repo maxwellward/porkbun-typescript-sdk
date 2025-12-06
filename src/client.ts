@@ -4,6 +4,7 @@ import { createPingMethod, type PingMethod } from "./endpoints/ping";
 import { createPricingMethod, PricingMethod } from "./endpoints/pricing";
 import { createSslNamespace, type SslNamespace } from "./endpoints/ssl";
 import { PorkbunAPIError, PorkbunHTTPError, PorkbunNetworkError, PorkbunResponseError } from "./errors";
+import { assertValid, validateDomain } from "./validation";
 
 export interface PorkbunClientOptions {
 	apiKey: string;
@@ -62,6 +63,12 @@ export class PorkbunClient {
 
 	async request<T>(path: string, payload?: object): Promise<T> {
 		let response: Response;
+
+		// Domain is common enough in most payloads that we can save some boilerplate by checking it here
+		if (payload && typeof payload === 'object' && 'domain' in payload) {
+			const domain = (payload as { domain: string }).domain;
+			assertValid(validateDomain(domain), 'domain', domain);
+		}
 
 		try {
 			const body = JSON.stringify({

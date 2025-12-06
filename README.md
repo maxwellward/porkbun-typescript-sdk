@@ -169,6 +169,13 @@ You can use `bun link` to link the in-development package to another project tem
 
 First, run `bun link` in the root of this project. Then, in the root of your test project, run `bun link porkbun-typescript-sdk` to install it. Once done, you can simply rebuild the package and the link will automatically update.
 
+### Guidelines
+
+- Ensure all functions have a JSDoc with a description, parameters, and a return tag at least.
+- Return data from the API unmodified (don't change field names).
+- Ensure functions calling the Porkbun API have proper validation using `assertValid()`.
+- Ensure README.md is updated to reflect the changes you make, if needed.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).

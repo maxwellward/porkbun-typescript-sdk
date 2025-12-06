@@ -18,6 +18,7 @@ import type {
 	DeleteGlueResponse,
 	DeleteUrlForwardResponse,
 } from "../types/domains";
+import { assertValid, validateForwardId, validateForwardType, validateIPs, validateNameservers, validateSubdomain, validateUrl, validateYesNo } from "../validation";
 
 export type DomainsNamespace = ReturnType<typeof createDomainsNamespace>;
 
@@ -79,6 +80,8 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * client.domains.updateNameservers({ domain: 'example.com', ns: ['curitiba.ns.porkbun.com', 'fortaleza.ns.porkbun.com', 'maceio.ns.porkbun.com', 'salvador.ns.porkbun.com'] });
 		 */
 		updateNameservers(payload: UpdateNsPayload): Promise<UpdateNsResponse> {
+			assertValid(validateNameservers(payload.ns), 'ns', payload.ns);
+
 			const { domain, ...body } = payload;
 			return client.request<UpdateNsResponse>(`${BASE_PATH}/updateNs/${domain}`, body);
 		},
@@ -114,6 +117,14 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * client.domains.addUrlForward({ domain: 'example.com', subdomain: 'blog', location: 'https://blog.example.com', type: 'temporary', includePath: 'no', wildcard: 'yes' });
 		 */
 		addUrlForward(payload: AddUrlForwardPayload): Promise<AddUrlForwardResponse> {
+			assertValid(validateUrl(payload.location), 'location', payload.location);
+			assertValid(validateForwardType(payload.type), 'type', payload.type);
+			assertValid(validateYesNo(payload.includePath), 'includePath', payload.includePath);
+			assertValid(validateYesNo(payload.wildcard), 'wildcard', payload.wildcard);
+			if (payload.subdomain !== undefined) {
+				assertValid(validateSubdomain(payload.subdomain), 'subdomain', payload.subdomain);
+			}
+
 			const { domain, ...body } = payload;
 			return client.request<AddUrlForwardResponse>(`${BASE_PATH}/addUrlForward/${domain}`, body)
 		},
@@ -127,6 +138,8 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * client.domains.deleteUrlForward({ domain: 'example.com', forward_id: '22049209' });
 		 */
 		deleteUrlForward(payload: DeleteUrlForwardPayload): Promise<DeleteUrlForwardResponse> {
+			assertValid(validateForwardId(payload.forward_id), 'forward_id', payload.forward_id);
+
 			return client.request<DeleteUrlForwardResponse>(`${BASE_PATH}/deleteUrlForward/${payload.domain}/${payload.forward_id}`)
 		},
 
@@ -152,6 +165,9 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * client.domains.createGlue({ domain: 'example.com', glue_host_subdomain: 'ns1', ips: ['192.168.1.1', '2001:db8:3333:4444:5555:6666:7777:8888'] });
 		 */
 		createGlue(payload: CreateGluePayload): Promise<CreateGlueResponse> {
+			assertValid(validateSubdomain(payload.glue_host_subdomain), 'glue_host_subdomain', payload.glue_host_subdomain);
+			assertValid(validateIPs(payload.ips), 'ips', payload.ips);
+
 			const { domain, glue_host_subdomain, ...body } = payload;
 			return client.request<CreateGlueResponse>(`${BASE_PATH}/createGlue/${domain}/${glue_host_subdomain}`, body)
 		},
@@ -166,6 +182,9 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * client.domains.updateGlue({ domain: 'example.com', glue_host_subdomain: 'ns1', ips: ['192.168.1.1', '2001:db8:3333:4444:5555:6666:7777:8888'] });
 		 */
 		updateGlue(payload: UpdateGluePayload): Promise<UpdateGlueResponse> {
+			assertValid(validateSubdomain(payload.glue_host_subdomain), 'glue_host_subdomain', payload.glue_host_subdomain);
+			assertValid(validateIPs(payload.ips), 'ips', payload.ips);
+
 			const { domain, glue_host_subdomain, ...body } = payload;
 			return client.request<UpdateGlueResponse>(`${BASE_PATH}/updateGlue/${domain}/${glue_host_subdomain}`, body)
 		},
@@ -179,6 +198,8 @@ export const createDomainsNamespace = (client: PorkbunClient) => {
 		 * client.domains.deleteGlue({ domain: 'example.com', glue_host_subdomain: 'ns1' });
 		 */
 		deleteGlue(payload: DeleteGluePayload): Promise<DeleteGlueResponse> {
+			assertValid(validateSubdomain(payload.glue_host_subdomain), 'glue_host_subdomain', payload.glue_host_subdomain);
+
 			return client.request<DeleteGlueResponse>(`${BASE_PATH}/deleteGlue/${payload.domain}/${payload.glue_host_subdomain}`)
 		},
 	}
