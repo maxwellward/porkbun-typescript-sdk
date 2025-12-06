@@ -9,7 +9,7 @@ This project is not affiliated with or endorsed by Porkbun. Please ask questions
 ## Installation
 
 ```
-npm install [PACKAGE NAME HERE]
+npm install porkbun-typescript-sdk
 ```
 
 ## Quick Start

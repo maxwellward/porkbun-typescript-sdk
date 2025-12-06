@@ -44,7 +44,8 @@
 	"scripts": {
 		"build": "tsc && bun build src/index.ts --outfile dist/index.js --format esm",
 		"check": "bunx biome check",
-		"check:fix": "bunx biome check --write"
+		"check:fix": "bunx biome check --write",
+		"prepublishOnly": "bun run check && bun run build"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.8",
