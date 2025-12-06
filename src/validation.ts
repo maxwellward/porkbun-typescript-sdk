@@ -221,6 +221,29 @@ export const validateYesNo = (value: string): ValidationResult => {
 	return { valid: true };
 };
 
+const VALID_DNS_RECORD_TYPES: readonly string[] =
+	Object.values(DNS_RECORD_TYPE);
+
+/**
+ * Validates a DNS record type.
+ * @example validateDnsRecordType("A") // valid
+ * @example validateDnsRecordType("INVALID") // invalid
+ */
+export const validateDnsRecordType = (type: string): ValidationResult => {
+	if (!type || type.length === 0) {
+		return { valid: false, reason: "DNS record type cannot be empty" };
+	}
+
+	if (!VALID_DNS_RECORD_TYPES.includes(type)) {
+		return {
+			valid: false,
+			reason: `Invalid DNS record type. Must be one of: ${VALID_DNS_RECORD_TYPES.join(", ")}`,
+		};
+	}
+
+	return { valid: true };
+};
+
 /**
  * Validates DNS record content based on record type.
  */
@@ -228,6 +251,11 @@ export const validateDnsContent = (
 	type: `${DNS_RECORD_TYPE}`,
 	content: string,
 ): ValidationResult => {
+	const typeResult = validateDnsRecordType(type);
+	if (!typeResult.valid) {
+		return typeResult;
+	}
+
 	if (!content || content.length === 0) {
 		return { valid: false, reason: "Content cannot be empty" };
 	}

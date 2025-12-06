@@ -28,6 +28,7 @@ import type {
 import {
 	assertValid,
 	validateDnsContent,
+	validateDnsRecordType,
 	validatePriority,
 	validateRecordId,
 	validateSubdomain,
@@ -110,6 +111,8 @@ export const createDnsNamespace = (client: PorkbunClient) => {
 		getRootDnsRecords(
 			payload: RetrieveDnsRecordsByTypePayload,
 		): Promise<RetrieveDnsRecordsByTypeResponse> {
+			assertValid(validateDnsRecordType(payload.type), "type", payload.type);
+
 			return client.request<RetrieveDnsRecordsByTypeResponse>(
 				`${BASE_PATH}/retrieveByNameType/${payload.domain}/${payload.type}`,
 			);
