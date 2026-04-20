@@ -48,7 +48,7 @@
 		"prepublishOnly": "bun run check && bun run build"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.6",
+		"@biomejs/biome": "2.4.12",
 		"@types/bun": "latest",
 		"typescript": "^5"
 	}
