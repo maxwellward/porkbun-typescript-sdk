@@ -50,6 +50,6 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.4.6",
 		"@types/bun": "latest",
-		"typescript": "^5"
+		"typescript": "^6"
 	}
 }
