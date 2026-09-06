@@ -132,9 +132,9 @@ export class PorkbunClient {
 }
 
 export type {
+	DnsNamespace,
+	DomainsNamespace,
 	PingMethod,
 	PricingMethod,
-	DomainsNamespace,
-	DnsNamespace,
 	SslNamespace,
 };
